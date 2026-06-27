@@ -1,38 +1,50 @@
 ﻿using System;
 using System.Windows.Forms;
+using sistemaDeGestionAutomotriz.Models;
+using sistemaDeGestionAutomotriz.Services;
+
+
+
 
 namespace sistemaDeGestionAutomotriz.Forms
 {
     public partial class FormLogin : Form
     {
+        private UsuarioService usuarioService = new UsuarioService();
         public FormLogin()
         {
             InitializeComponent();
+
         }
 
 
 
 
-        //Evento de click del boton loging
+        //Evento de click del boton login
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            string usuario = textBoxUsuario.Text.Trim();
-            string contraseña = textBoxPass.Text;
+            string email = textBoxUsuario.Text.Trim();
+            string pass = textBoxPass.Text;
 
-            // Login de prueba
-            if (usuario == "admin" && contraseña == "1234")
+
+            //manda a hacer el login 
+            Usuario usuario = usuarioService.Login(email, pass);
+            
+
+
+            if (usuario != null)
             {
-                // Guarda la sesión
-                SessionService.GuardarSesion(1);
+                // Guarda la sesión con el id real del usuario
+                SessionService.GuardarSesion(usuario.UsuarioId);
 
-                // Oculta el formulario de login
+
                 this.Hide();
 
-                // Abre el formulario principal
+
                 FormPrincipal principal = new FormPrincipal();
                 principal.ShowDialog();
 
-                // Cierra el login cuando se cierre el principal
+
                 this.Close();
             }
             else
@@ -42,6 +54,23 @@ namespace sistemaDeGestionAutomotriz.Forms
                     "Error de inicio de sesión",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        private void comboBoxDemoUsuarios_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxDemoUsuarios.SelectedItem != null)
+            {
+                if (comboBoxDemoUsuarios.SelectedItem.ToString() == "Administrador")
+                {
+                    textBoxUsuario.Text = "administradorDemo@gmail.com";
+                    textBoxPass.Text = "1234";
+                }
+                else if (comboBoxDemoUsuarios.SelectedItem.ToString() == "Técnico") {
+
+                    textBoxUsuario.Text = "tecnicoDemo@gmail.com";
+                    textBoxPass.Text = "1234";
+                }
             }
         }
     }

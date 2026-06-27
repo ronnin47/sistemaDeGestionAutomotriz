@@ -8,6 +8,46 @@ namespace sistemaDeGestionAutomotriz
 {
     public static class SessionService
     {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //Persistencia en memoria local de la sesion 
         private static readonly string Carpeta =
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
@@ -20,7 +60,7 @@ namespace sistemaDeGestionAutomotriz
         {
             return File.Exists(Archivo);
         }
-
+   
         public static void GuardarSesion(int usuarioId)
         {
             if (!Directory.Exists(Carpeta))

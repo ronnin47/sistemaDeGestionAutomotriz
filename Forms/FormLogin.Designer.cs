@@ -34,6 +34,7 @@ namespace sistemaDeGestionAutomotriz.Forms
             this.labelPass = new System.Windows.Forms.Label();
             this.textBoxUsuario = new System.Windows.Forms.TextBox();
             this.textBoxPass = new System.Windows.Forms.TextBox();
+            this.comboBoxDemoUsuarios = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // buttonLogin
@@ -78,11 +79,24 @@ namespace sistemaDeGestionAutomotriz.Forms
             this.textBoxPass.Size = new System.Drawing.Size(167, 20);
             this.textBoxPass.TabIndex = 4;
             // 
+            // comboBoxDemoUsuarios
+            // 
+            this.comboBoxDemoUsuarios.FormattingEnabled = true;
+            this.comboBoxDemoUsuarios.Items.AddRange(new object[] {
+            "Administrador",
+            "Técnico"});
+            this.comboBoxDemoUsuarios.Location = new System.Drawing.Point(334, 279);
+            this.comboBoxDemoUsuarios.Name = "comboBoxDemoUsuarios";
+            this.comboBoxDemoUsuarios.Size = new System.Drawing.Size(167, 21);
+            this.comboBoxDemoUsuarios.TabIndex = 5;
+            this.comboBoxDemoUsuarios.SelectedIndexChanged += new System.EventHandler(this.comboBoxDemoUsuarios_SelectedIndexChanged);
+            // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.comboBoxDemoUsuarios);
             this.Controls.Add(this.textBoxPass);
             this.Controls.Add(this.textBoxUsuario);
             this.Controls.Add(this.labelPass);
@@ -102,5 +116,6 @@ namespace sistemaDeGestionAutomotriz.Forms
         private System.Windows.Forms.Label labelPass;
         private System.Windows.Forms.TextBox textBoxUsuario;
         private System.Windows.Forms.TextBox textBoxPass;
+        private System.Windows.Forms.ComboBox comboBoxDemoUsuarios;
     }
 }
