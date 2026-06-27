@@ -10,7 +10,7 @@ namespace sistemaDeGestionAutomotriz.Services
     public class UsuarioService
     {
         //private readonly string cadenaConexion = "server=localhost;database=automotrizdb;uid=root;pwd=;";
-
+        //
 
 
         public Usuario Login(string email, string pass)
