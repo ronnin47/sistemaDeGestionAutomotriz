@@ -106,21 +106,23 @@ namespace sistemaDeGestionAutomotriz
             // 
             // buttonVentas
             // 
-            this.buttonVentas.Location = new System.Drawing.Point(54, 110);
+            this.buttonVentas.Location = new System.Drawing.Point(54, 157);
             this.buttonVentas.Name = "buttonVentas";
             this.buttonVentas.Size = new System.Drawing.Size(75, 23);
             this.buttonVentas.TabIndex = 2;
             this.buttonVentas.Text = "Ventas";
             this.buttonVentas.UseVisualStyleBackColor = true;
+            this.buttonVentas.Click += new System.EventHandler(this.buttonVentas_Click);
             // 
             // buttonClientes
             // 
-            this.buttonClientes.Location = new System.Drawing.Point(54, 161);
+            this.buttonClientes.Location = new System.Drawing.Point(54, 103);
             this.buttonClientes.Name = "buttonClientes";
             this.buttonClientes.Size = new System.Drawing.Size(75, 23);
             this.buttonClientes.TabIndex = 3;
             this.buttonClientes.Text = "Clientes";
             this.buttonClientes.UseVisualStyleBackColor = true;
+            this.buttonClientes.Click += new System.EventHandler(this.buttonClientes_Click);
             // 
             // buttonCotizaciones
             // 
@@ -130,6 +132,7 @@ namespace sistemaDeGestionAutomotriz
             this.buttonCotizaciones.TabIndex = 4;
             this.buttonCotizaciones.Text = "Cotizaciones";
             this.buttonCotizaciones.UseVisualStyleBackColor = true;
+            this.buttonCotizaciones.Click += new System.EventHandler(this.buttonCotizaciones_Click);
             // 
             // buttonGarantias
             // 
@@ -139,6 +142,7 @@ namespace sistemaDeGestionAutomotriz
             this.buttonGarantias.TabIndex = 5;
             this.buttonGarantias.Text = "Garantías";
             this.buttonGarantias.UseVisualStyleBackColor = true;
+            this.buttonGarantias.Click += new System.EventHandler(this.buttonGarantias_Click);
             // 
             // FormPrincipal
             // 

@@ -1,7 +1,7 @@
 ﻿
 namespace sistemaDeGestionAutomotriz.UserControls
 {
-    partial class OrdenesControl
+    partial class VentasControl
     {
         /// <summary> 
         /// Variable del diseñador necesaria.
@@ -34,22 +34,22 @@ namespace sistemaDeGestionAutomotriz.UserControls
             // 
             // label1
             // 
+            this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(330, 230);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 23);
+            this.label1.Size = new System.Drawing.Size(81, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Componente Ordenes";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.label1.Text = "Pantalla Ventas";
             // 
-            // OrdenesControl
+            // VentasControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Name = "OrdenesControl";
-            this.Size = new System.Drawing.Size(651, 494);
-            this.Load += new System.EventHandler(this.OrdenesControl_Load);
+            this.Name = "VentasControl";
+            this.Size = new System.Drawing.Size(669, 472);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

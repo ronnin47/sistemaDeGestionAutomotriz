@@ -96,5 +96,35 @@ private void buttonLogOut_Click(object sender, EventArgs e)
             MostrarPantallaControl( pantallaOrdenes );
 
         }
+
+        private void buttonVentas_Click(object sender, EventArgs e)
+        {
+            VentasControl pantallaVentas = new VentasControl();
+
+            MostrarPantallaControl(pantallaVentas);
+        }
+
+        private void buttonClientes_Click(object sender, EventArgs e)
+        {
+            ClientesControl pantallaClientes = new ClientesControl();
+
+            MostrarPantallaControl(pantallaClientes);
+        }
+
+        private void buttonCotizaciones_Click(object sender, EventArgs e)
+        {
+           CotizacionesControl pantallaCotizaciones = new CotizacionesControl();
+
+            MostrarPantallaControl(pantallaCotizaciones);
+        }
+
+        private void buttonGarantias_Click(object sender, EventArgs e)
+        {
+
+            GarantiasControl pantallaGarantias = new GarantiasControl();
+
+            MostrarPantallaControl(pantallaGarantias);
+
+        }
     }
 }

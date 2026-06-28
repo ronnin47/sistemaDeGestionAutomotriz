@@ -117,11 +117,35 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SessionService.cs" />
     <Compile Include="Services\UsuarioService.cs" />
+    <Compile Include="UserControls\ClientesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\ClientesControl.Designer.cs">
+      <DependentUpon>ClientesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\CotizacionesControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\CotizacionesControl.Designer.cs">
+      <DependentUpon>CotizacionesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GarantiasControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\GarantiasControl.Designer.cs">
+      <DependentUpon>GarantiasControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\OrdenesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControls\OrdenesControl.Designer.cs">
       <DependentUpon>OrdenesControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\VentasControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\VentasControl.Designer.cs">
+      <DependentUpon>VentasControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Forms\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
@@ -138,8 +162,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="UserControls\ClientesControl.resx">
+      <DependentUpon>ClientesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\CotizacionesControl.resx">
+      <DependentUpon>CotizacionesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\GarantiasControl.resx">
+      <DependentUpon>GarantiasControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\OrdenesControl.resx">
       <DependentUpon>OrdenesControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\VentasControl.resx">
+      <DependentUpon>VentasControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -10,21 +10,11 @@ using System.Windows.Forms;
 
 namespace sistemaDeGestionAutomotriz.UserControls
 {
-    public partial class OrdenesControl : UserControl
+    public partial class VentasControl : UserControl
     {
-        public OrdenesControl()
+        public VentasControl()
         {
             InitializeComponent();
-        }
-
-        private void OrdenesControl_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
