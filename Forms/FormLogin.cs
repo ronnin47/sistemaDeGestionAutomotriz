@@ -11,10 +11,11 @@ namespace sistemaDeGestionAutomotriz.Forms
     public partial class FormLogin : Form
     {
         private UsuarioService usuarioService = new UsuarioService();
+
         public FormLogin()
         {
             InitializeComponent();
-
+             
         }
 
 

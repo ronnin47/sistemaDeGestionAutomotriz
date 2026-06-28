@@ -9,6 +9,17 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Forms;
 
+using sistemaDeGestionAutomotriz.UserControls;
+
+
+
+
+
+
+
+
+
+
 namespace sistemaDeGestionAutomotriz
 {
     public partial class FormPrincipal : Form
@@ -53,5 +64,37 @@ private void buttonLogOut_Click(object sender, EventArgs e)
             this.Close();
         }
     }
-}
+
+
+
+
+
+
+
+
+
+
+        //Navegacion por botones
+        private void MostrarPantallaControl(UserControl control)
+        {
+            panelContenido.Controls.Clear();
+
+            control.Dock = DockStyle.Fill;
+
+            panelContenido.Controls.Add(control);
+        }
+
+
+
+
+        //boton evento navegacion Ordenes
+        private void buttonOrdenes_Click(object sender, EventArgs e)
+        {
+
+            OrdenesControl  pantallaOrdenes = new OrdenesControl();
+
+            MostrarPantallaControl( pantallaOrdenes );
+
+        }
+    }
 }

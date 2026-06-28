@@ -9,8 +9,7 @@ namespace sistemaDeGestionAutomotriz.Services
 {
     public class UsuarioService
     {
-        //private readonly string cadenaConexion = "server=localhost;database=automotrizdb;uid=root;pwd=;";
-        //
+       
 
 
         public Usuario Login(string email, string pass)
@@ -18,8 +17,6 @@ namespace sistemaDeGestionAutomotriz.Services
             using (MySqlConnection conexion = new MySqlConnection(Database.CadenaConexion))
             {
                 conexion.Open();
-
-
 
                 //query=consulta
                 string sql = @"SELECT *
