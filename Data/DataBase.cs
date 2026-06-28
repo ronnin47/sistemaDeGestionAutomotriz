@@ -5,13 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-    namespace sistemaDeGestionAutomotriz.Data
+    namespace sistemaDeGestionAutomotriz.Services
     {
-
-
-        public static class Database
+        public class Conexion
         {
-            public static string CadenaConexion ="server=localhost;database=automotrizdb;uid=root;pwd=;";
+            private static string cadena = ConfigurationManager
+                .ConnectionStrings["ElectroLab"].ConnectionString;
+
+            public static NpgsqlConnection ObtenerConexion()
+            {
+                return new NpgsqlConnection(cadena);
+            }
         }
     }
 
