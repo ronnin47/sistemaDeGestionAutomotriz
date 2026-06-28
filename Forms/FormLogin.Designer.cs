@@ -35,6 +35,7 @@ namespace sistemaDeGestionAutomotriz.Forms
             this.textBoxUsuario = new System.Windows.Forms.TextBox();
             this.textBoxPass = new System.Windows.Forms.TextBox();
             this.comboBoxDemoUsuarios = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonLogin
@@ -91,11 +92,22 @@ namespace sistemaDeGestionAutomotriz.Forms
             this.comboBoxDemoUsuarios.TabIndex = 5;
             this.comboBoxDemoUsuarios.SelectedIndexChanged += new System.EventHandler(this.comboBoxDemoUsuarios_SelectedIndexChanged);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(560, 96);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(103, 24);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "Prueba BD";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // FormLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.comboBoxDemoUsuarios);
             this.Controls.Add(this.textBoxPass);
             this.Controls.Add(this.textBoxUsuario);
@@ -117,5 +129,6 @@ namespace sistemaDeGestionAutomotriz.Forms
         private System.Windows.Forms.TextBox textBoxUsuario;
         private System.Windows.Forms.TextBox textBoxPass;
         private System.Windows.Forms.ComboBox comboBoxDemoUsuarios;
+        private System.Windows.Forms.Button button1;
     }
 }

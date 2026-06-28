@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Models;
 using sistemaDeGestionAutomotriz.Services;
+using sistemaDeGestionAutomotriz.Data;
 
 
 
@@ -72,6 +73,28 @@ namespace sistemaDeGestionAutomotriz.Forms
                     textBoxUsuario.Text = "tecnicoDemo@gmail.com";
                     textBoxPass.Text = "1234";
                 }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var con = DataBase.ObtenerConexion())
+                {
+                    con.Open();
+                    MessageBox.Show("¡Conexión exitosa con Supabase!",
+                                  "OK",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message,
+                               "Error",
+                               MessageBoxButtons.OK,
+                               MessageBoxIcon.Error);
             }
         }
     }
