@@ -87,6 +87,9 @@ namespace sistemaDeGestionAutomotriz
             panelContenido.Controls.Add(control);
         }
 
+
+
+
         //boton evento navegacion Ordenes
         private void buttonOrdenes_Click(object sender, EventArgs e)
         {
