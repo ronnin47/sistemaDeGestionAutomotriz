@@ -42,7 +42,7 @@ namespace sistemaDeGestionAutomotriz.Forms
                 this.Hide();
 
 
-                FormPrincipal principal = new FormPrincipal();
+                FormPrincipal principal = new FormPrincipal(usuario);
                 principal.ShowDialog();
 
 

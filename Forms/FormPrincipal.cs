@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Forms;
 
 using sistemaDeGestionAutomotriz.UserControls;
+using sistemaDeGestionAutomotriz.Models;
 
 
 
@@ -24,15 +25,22 @@ namespace sistemaDeGestionAutomotriz
 {
     public partial class FormPrincipal : Form
     {
-
+        private Usuario _usuario;
         public FormPrincipal()
         {
-
+          
          
             InitializeComponent();
+          
 
         }
 
+
+        public FormPrincipal(Usuario usuario)
+        {
+            InitializeComponent();
+            _usuario = usuario;
+        }
 
 
         private void FormPrincipal_Load(object sender, EventArgs e)
