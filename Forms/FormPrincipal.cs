@@ -24,8 +24,11 @@ namespace sistemaDeGestionAutomotriz
 {
     public partial class FormPrincipal : Form
     {
+
         public FormPrincipal()
         {
+
+         
             InitializeComponent();
 
         }
@@ -44,7 +47,7 @@ namespace sistemaDeGestionAutomotriz
 
       
 
-private void buttonLogOut_Click(object sender, EventArgs e)
+       private void buttonLogOut_Click(object sender, EventArgs e)
     {
         DialogResult resultado = MessageBox.Show(
             "¿Desea cerrar la sesión?",
@@ -83,9 +86,6 @@ private void buttonLogOut_Click(object sender, EventArgs e)
 
             panelContenido.Controls.Add(control);
         }
-
-
-
 
         //boton evento navegacion Ordenes
         private void buttonOrdenes_Click(object sender, EventArgs e)

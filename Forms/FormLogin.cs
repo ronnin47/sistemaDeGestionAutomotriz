@@ -64,12 +64,12 @@ namespace sistemaDeGestionAutomotriz.Forms
             {
                 if (comboBoxDemoUsuarios.SelectedItem.ToString() == "Administrador")
                 {
-                    textBoxUsuario.Text = "administradorDemo@gmail.com";
+                    textBoxUsuario.Text = "administradordemo@gmail.com";
                     textBoxPass.Text = "1234";
                 }
                 else if (comboBoxDemoUsuarios.SelectedItem.ToString() == "Técnico") {
 
-                    textBoxUsuario.Text = "tecnicoDemo@gmail.com";
+                    textBoxUsuario.Text = "tecnicodemo@gmail.com";
                     textBoxPass.Text = "1234";
                 }
             }
