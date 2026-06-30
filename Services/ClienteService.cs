@@ -14,8 +14,11 @@ namespace sistemaDeGestionAutomotriz.Services
         public class ClienteService
         {
 
-            //siempre hacemos primero el GET
-        public List<Cliente> ObtenerClientes()
+        
+
+
+        //obtener clientes activos
+        public List<Cliente> ObtenerClientesActivos()
             {
                 List<Cliente> listaClientes = new List<Cliente>();
 
@@ -32,9 +35,11 @@ namespace sistemaDeGestionAutomotriz.Services
                             dni,               
                             telefono,
                             email,
-                            direccion
+                            direccion,
+                            activo
                            
-                           FROM clientes;";
+                           FROM clientes
+                           WHERE activo = TRUE;";
 
                         NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
 
@@ -51,6 +56,7 @@ namespace sistemaDeGestionAutomotriz.Services
                                 Telefono = reader["telefono"].ToString(),
                                 Email = reader["email"].ToString(),
                                 Direccion= reader["direccion"].ToString(),
+                                Activo= Convert.ToBoolean(reader["activo"])
                             };
 
                             listaClientes.Add(cliente);
@@ -84,7 +90,7 @@ namespace sistemaDeGestionAutomotriz.Services
                 }
 
 
-
+          
 
 
             
@@ -131,6 +137,116 @@ namespace sistemaDeGestionAutomotriz.Services
             */
         }
 
+        //obtener clientes inactivos
+        public List<Cliente> ObtenerClientesInactivos()
+        {
+            List<Cliente> listaClientes = new List<Cliente>();
+
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    string sql = @"SELECT
+                            id_cliente,
+                            nombre,
+                            apellido,
+                            dni,
+                            telefono,
+                            email,
+                            direccion,
+                            activo
+                           FROM clientes
+                           WHERE activo = FALSE;";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
+
+                    NpgsqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Cliente cliente = new Cliente
+                        {
+                            ClienteId = Convert.ToInt32(reader["id_cliente"]),
+                            Nombre = reader["nombre"].ToString(),
+                            Apellido = reader["apellido"].ToString(),
+                            Dni = reader["dni"].ToString(),
+                            Telefono = reader["telefono"].ToString(),
+                            Email = reader["email"].ToString(),
+                            Direccion = reader["direccion"].ToString(),
+                            Activo = Convert.ToBoolean(reader["activo"])
+                        };
+
+                        listaClientes.Add(cliente);
+                    }
+
+                    return listaClientes;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error de conexión: " + ex.Message);
+                    return new List<Cliente>();
+                }
+            }
+        }
+
+        //obtener todos los clientes activos y inactivos
+        public List<Cliente> ObtenerTodosLosClientes()
+        {
+            List<Cliente> listaClientes = new List<Cliente>();
+
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    string sql = @"SELECT
+                            id_cliente,
+                            nombre,
+                            apellido,
+                            dni,
+                            telefono,
+                            email,
+                            direccion,
+                            activo
+                           FROM clientes;";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
+
+                    NpgsqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Cliente cliente = new Cliente
+                        {
+                            ClienteId = Convert.ToInt32(reader["id_cliente"]),
+                            Nombre = reader["nombre"].ToString(),
+                            Apellido = reader["apellido"].ToString(),
+                            Dni = reader["dni"].ToString(),
+                            Telefono = reader["telefono"].ToString(),
+                            Email = reader["email"].ToString(),
+                            Direccion = reader["direccion"].ToString(),
+                            Activo = Convert.ToBoolean(reader["activo"])
+                        };
+
+                        listaClientes.Add(cliente);
+                    }
+
+                    return listaClientes;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error de conexión: " + ex.Message);
+                    return new List<Cliente>();
+                }
+            }
+        }
+
+
+
+
 
 
 
@@ -149,7 +265,8 @@ namespace sistemaDeGestionAutomotriz.Services
                                dni,
                                telefono,
                                email,
-                               direccion
+                               direccion,
+                               activo
                            )
                            VALUES
                            (
@@ -158,7 +275,8 @@ namespace sistemaDeGestionAutomotriz.Services
                                @dni,
                                @telefono,
                                @email,
-                               @direccion
+                               @direccion,
+                               @activo
                            );";
 
                     NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
@@ -169,6 +287,7 @@ namespace sistemaDeGestionAutomotriz.Services
                     comando.Parameters.AddWithValue("@telefono", cliente.Telefono);
                     comando.Parameters.AddWithValue("@email", cliente.Email);
                     comando.Parameters.AddWithValue("@direccion", cliente.Direccion);
+                    comando.Parameters.AddWithValue("@activo", cliente.Activo);
 
                     comando.ExecuteNonQuery();
 
@@ -184,7 +303,74 @@ namespace sistemaDeGestionAutomotriz.Services
             }
         }
 
+        public void ActualizarCliente(Cliente cliente)
+        {
 
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    string sql = @"UPDATE clientes
+                           SET
+                               nombre = @nombre,
+                               apellido = @apellido,
+                               dni = @dni,
+                               telefono = @telefono,
+                               email = @email,
+                               direccion = @direccion
+                           WHERE id_cliente = @id;";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
+
+                    comando.Parameters.AddWithValue("@id", cliente.ClienteId);
+                    comando.Parameters.AddWithValue("@nombre", cliente.Nombre);
+                    comando.Parameters.AddWithValue("@apellido", cliente.Apellido);
+                    comando.Parameters.AddWithValue("@dni", cliente.Dni);
+                    comando.Parameters.AddWithValue("@telefono", cliente.Telefono);
+                    comando.Parameters.AddWithValue("@email", cliente.Email);
+                    comando.Parameters.AddWithValue("@direccion", cliente.Direccion);
+
+                    comando.ExecuteNonQuery();
+
+                    MessageBox.Show("Cliente actualizado correctamente.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al actualizar el cliente: " + ex.Message);
+                }
+            }
+        }
+
+
+
+        public void DarDeBajaCliente(int clienteId)
+        {
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    string sql = @"UPDATE clientes
+                           SET activo = FALSE
+                           WHERE id_cliente = @id;";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
+
+                    comando.Parameters.AddWithValue("@id", clienteId);
+
+                    comando.ExecuteNonQuery();
+
+                    MessageBox.Show("Cliente dado de baja correctamente.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al dar de baja el cliente: " + ex.Message);
+                }
+            }
+        }
 
     }
 }

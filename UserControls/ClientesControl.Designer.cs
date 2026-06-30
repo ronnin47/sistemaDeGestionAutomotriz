@@ -39,7 +39,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(242, 35);
+            this.label1.Location = new System.Drawing.Point(20, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 23);
             this.label1.TabIndex = 0;
@@ -47,16 +47,18 @@ namespace sistemaDeGestionAutomotriz.UserControls
             // 
             // dgvListaClientes
             // 
+            this.dgvListaClientes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvListaClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvListaClientes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvListaClientes.Location = new System.Drawing.Point(0, 0);
             this.dgvListaClientes.Name = "dgvListaClientes";
-            this.dgvListaClientes.Size = new System.Drawing.Size(942, 267);
+            this.dgvListaClientes.Size = new System.Drawing.Size(942, 309);
             this.dgvListaClientes.TabIndex = 1;
+            this.dgvListaClientes.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListaClientes_CellDoubleClick);
             // 
             // buttonNuevoCliente
             // 
-            this.buttonNuevoCliente.Location = new System.Drawing.Point(83, 83);
+            this.buttonNuevoCliente.Location = new System.Drawing.Point(18, 79);
             this.buttonNuevoCliente.Name = "buttonNuevoCliente";
             this.buttonNuevoCliente.Size = new System.Drawing.Size(102, 23);
             this.buttonNuevoCliente.TabIndex = 2;
@@ -67,9 +69,9 @@ namespace sistemaDeGestionAutomotriz.UserControls
             // panel1
             // 
             this.panel1.Controls.Add(this.dgvListaClientes);
-            this.panel1.Location = new System.Drawing.Point(18, 162);
+            this.panel1.Location = new System.Drawing.Point(18, 120);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(942, 267);
+            this.panel1.Size = new System.Drawing.Size(942, 309);
             this.panel1.TabIndex = 3;
             // 
             // ClientesControl

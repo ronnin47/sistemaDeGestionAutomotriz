@@ -128,6 +128,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataBase.cs" />
+    <Compile Include="Forms\FormEditarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormEditarCliente.Designer.cs">
+      <DependentUpon>FormEditarCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,11 +153,13 @@
       <DependentUpon>FormPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\OrdenTrabajoDto.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClienteService.cs" />
+    <Compile Include="Services\OrdenTrabajoService.cs" />
     <Compile Include="Services\SessionService.cs" />
     <Compile Include="Services\UsuarioService.cs" />
     <Compile Include="UserControls\ClientesControl.cs">
@@ -184,6 +192,9 @@
     <Compile Include="UserControls\VentasControl.Designer.cs">
       <DependentUpon>VentasControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\FormEditarCliente.resx">
+      <DependentUpon>FormEditarCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </EmbeddedResource>

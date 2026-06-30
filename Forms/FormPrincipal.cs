@@ -17,10 +17,6 @@ using sistemaDeGestionAutomotriz.Models;
 
 
 
-
-
-
-
 namespace sistemaDeGestionAutomotriz
 {
     public partial class FormPrincipal : Form
