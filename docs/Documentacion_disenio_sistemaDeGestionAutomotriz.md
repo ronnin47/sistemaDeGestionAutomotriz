@@ -121,3 +121,22 @@ La interfaz contempla ambos modos. Cada color de la paleta define su valor para 
 - `UI/Tema.cs`: centraliza la paleta, la tipografía, el espaciado, los íconos y los estilos de los componentes.
 - `UI/Avisos.cs`: mensajes estándar al usuario (confirmación, éxito, error).
 - Los estilos se aplican por código (no desde el diseñador visual), de modo que se mantengan consistentes y no se sobrescriban al regenerarse los formularios.
+
+---
+
+## 12. Pantalla de inicio de sesión
+
+La pantalla de login se resuelve como una **tarjeta centrada** sobre el fondo de la aplicación, alineada vertical y horizontalmente (se mantiene centrada también con la ventana maximizada). La tarjeta contiene, de arriba hacia abajo: un ícono identificatorio, el nombre del sistema, un subtítulo, los campos de usuario y contraseña (con la contraseña oculta), el botón principal "Ingresar" del ancho de la tarjeta y, separado por una línea, un selector de usuario de demostración. Es una pantalla especial: no sigue el molde de "encabezado + tabla" de las pantallas de contenido.
+
+---
+
+## 13. Pantalla de Clientes
+
+Aplica el molde común (sección 7):
+
+- **Encabezado:** título "Clientes", contador de registros y botón "Nuevo cliente".
+- **Barra de herramientas:** buscador que filtra la lista en vivo por nombre, apellido, DNI o teléfono.
+- **Cuerpo:** tabla con las columnas Nombre, Apellido, Teléfono, Email y DNI. Si no hay registros, se muestra el estado vacío.
+- **Alta / edición:** en una ventana aparte (`FormCliente`) con los campos del cliente y validación de los obligatorios.
+
+El alta y el listado operan contra el servicio de clientes del backend. Las acciones de editar y eliminar quedan previstas para cuando el backend exponga esas operaciones.
