@@ -30,13 +30,13 @@ namespace sistemaDeGestionAutomotriz.Services
                     string sql = @"SELECT
                             usuarios.id_usuario,
                             usuarios.nombre,
+                            usuarios.apellido,
+
                             usuarios.email,
                             usuarios.password,
-                            rol.nombre_rol
-                            
+                            usuarios.rol  
                             FROM usuarios
-                            INNER JOIN rol
-                                ON usuarios.id_rol = rol.id_rol
+                          
 
                             WHERE usuarios.email = @email;";
 
@@ -57,9 +57,10 @@ namespace sistemaDeGestionAutomotriz.Services
                     {
                         UsuarioId = Convert.ToInt32(reader["id_usuario"]),
                         Nombre = reader["nombre"].ToString(),
+                        Apellido = reader["apellido"].ToString(),
                         Email = reader["email"].ToString(),
                         Pass = reader["password"].ToString(),
-                        Rol = reader["nombre_rol"].ToString()
+                        Rol = reader["rol"].ToString()
                     };
 
                     /*

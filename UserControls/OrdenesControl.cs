@@ -29,35 +29,42 @@ namespace sistemaDeGestionAutomotriz.UserControls
             OrdenTrabajoService servicio = new OrdenTrabajoService();
 
             dgvOrdenesTrabajo.DataSource = servicio.ObtenerOrdenesTrabajo();
+
+
+            //forma para renderizar lo que quiera ocultar columnas
+
+            dgvOrdenesTrabajo.Columns["Detalle"].Visible = false;
+            dgvOrdenesTrabajo.Columns["Diagnostico"].Visible = false;
+            dgvOrdenesTrabajo.Columns["Telefono"].Visible = false;
+            dgvOrdenesTrabajo.Columns["Precio"].Visible = false;
+            dgvOrdenesTrabajo.Columns["Garantia"].Visible = false;
         }
 
 
 
 
+
+        //esto para que se pueda vel el panel de abajo
         private void dgvOrdenesTrabajo_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Validar que se haya hecho clic en una fila válida y no en el encabezado
-            if (e.RowIndex >= 0)
+            if (e.RowIndex < 0)
+                return;
+
+            if (dgvOrdenesTrabajo.Rows[e.RowIndex].DataBoundItem is OrdenTrabajoDto orden)
             {
-                // Obtener la fila seleccionada actual
-                DataGridViewRow fila = dgvOrdenesTrabajo.Rows[e.RowIndex];
+                labelCliente.Text = orden.Cliente;
+                labelNumeroOrdenTipo.Text = $"{orden.NumeroOrden}-{orden.TipoModulo}";
+                labelDni.Text = orden.Dni;
+                labelDetalle.Text = orden.Detalle;
+                labelAsignado.Text = orden.TecnicoAsignado;
+                labelEstado.Text = orden.Estado;
 
-                // Mapear los datos de las celdas a tus Labels o TextBox de abajo
-                labelCliente.Text = fila.Cells["Cliente"].Value?.ToString();
-                labelDetalle.Text = fila.Cells["Detalle"].Value?.ToString();
-                labelAsignado.Text = fila.Cells["Asignado"].Value?.ToString();
-                labelEstado.Text = fila.Cells["Estado"].Value?.ToString();
+                labelTelefono.Text = orden.Telefono;
+                labelDiagnostico.Text = orden.Diagnostico;
+                labelCotizacion.Text = orden.Precio.ToString("C");
 
-                // Para el DNI y Teléfono, si no están en el DataGridView, 
-                // deberás pasárselos desde el Objeto original si usas una Lista como DataSource:
-                if (fila.DataBoundItem is OrdenTrabajoDto ordenSeleccionada)
-                {
-                    // Nota: Agrega Dni y Telefono a tu DTO si la query los incluye más adelante
-                    labelDni.Text = "Falta mapear DNI";
-                    labelTelefono.Text = "Falta mapear Teléfono";
-                    labelDiagnostico.Text = "Falta diagnostico";
-                    labelCotizacion.Text = "Falta cotización";
-                }
+                // Cuando agregues el DNI:
+                // labelDni.Text = orden.Dni;
             }
         }
 

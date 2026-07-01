@@ -72,6 +72,24 @@ namespace sistemaDeGestionAutomotriz.Forms
                     textBoxUsuario.Text = "tecnicodemo@gmail.com";
                     textBoxPass.Text = "1234";
                 }
+                else if (comboBoxDemoUsuarios.SelectedItem.ToString() == "Instalador")
+                {
+
+                    textBoxUsuario.Text = "instaladordemo@gmail.com";
+                    textBoxPass.Text = "1234";
+                }
+                else if (comboBoxDemoUsuarios.SelectedItem.ToString() == "Cotizador")
+                {
+
+                    textBoxUsuario.Text = "cotizadordemo@gmail.com";
+                    textBoxPass.Text = "1234";
+                }
+                else if (comboBoxDemoUsuarios.SelectedItem.ToString() == "Deposito")
+                {
+
+                    textBoxUsuario.Text = "depositodemo@gmail.com";
+                    textBoxPass.Text = "1234";
+                }
             }
         }
     }
