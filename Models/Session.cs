@@ -11,10 +11,6 @@ namespace sistemaDeGestionAutomotriz.Models
         //estado
         public int UsuarioId { get; set; }
 
-
-
-
-
         //metodos
     }
 }

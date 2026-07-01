@@ -133,11 +133,23 @@
     <Compile Include="Forms\FormCliente.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FormEditarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormEditarCliente.Designer.cs">
+      <DependentUpon>FormEditarCliente.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormNuevaVenta.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormNuevaVenta.Designer.cs">
+      <DependentUpon>FormNuevaVenta.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormNuevoCliente.cs">
       <SubType>Form</SubType>
@@ -152,13 +164,21 @@
       <DependentUpon>FormPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\CotizacionPendienteDto.cs" />
+    <Compile Include="Models\Insumo.cs" />
+    <Compile Include="Models\OrdenTrabajoDto.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\VentaInsumosDto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClienteService.cs" />
+    <Compile Include="Services\CotizacionService.cs" />
+    <Compile Include="Services\InsumoService.cs" />
+    <Compile Include="Services\OrdenTrabajoService.cs" />
     <Compile Include="Services\SessionService.cs" />
     <Compile Include="Services\UsuarioService.cs" />
+    <Compile Include="Services\VentaService.cs" />
     <Compile Include="UserControls\ClientesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -189,8 +209,14 @@
     <Compile Include="UserControls\VentasControl.Designer.cs">
       <DependentUpon>VentasControl.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Forms\FormEditarCliente.resx">
+      <DependentUpon>FormEditarCliente.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormNuevaVenta.resx">
+      <DependentUpon>FormNuevaVenta.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormNuevoCliente.resx">
       <DependentUpon>FormNuevoCliente.cs</DependentUpon>

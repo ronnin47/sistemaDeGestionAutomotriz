@@ -45,7 +45,8 @@ namespace sistemaDeGestionAutomotriz.Forms
                 Dni = textBoxDni.Text,
                 Telefono = textBoxTelefono.Text,
                 Email = textBoxEmail.Text,
-                Direccion = textBoxDireccion.Text
+                Direccion = textBoxDireccion.Text,
+                Activo = true
             };
 
            // ClienteService clienteService = new ClienteService();

@@ -113,7 +113,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
         {
             // Si falla la conexión, el servicio del compañero ya muestra su propio aviso
             // y devuelve una lista vacía, así que acá no hace falta otro try/catch.
-            _clientes = _service.ObtenerClientes() ?? new List<Cliente>();
+            _clientes = _service.ObtenerClientesActivos() ?? new List<Cliente>();
             AplicarFiltro();
         }
 

@@ -18,10 +18,6 @@ using sistemaDeGestionAutomotriz.UI;
 
 
 
-
-
-
-
 namespace sistemaDeGestionAutomotriz
 {
     public partial class FormPrincipal : Form

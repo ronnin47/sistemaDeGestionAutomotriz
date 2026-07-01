@@ -23,6 +23,10 @@ namespace sistemaDeGestionAutomotriz.Models
 
         public string Direccion { get; set; }
 
+        public bool Activo { get; set; } = true;
+
+        public string NombreCompleto => $"{Apellido}, {Nombre}";
+
 
     }
 }

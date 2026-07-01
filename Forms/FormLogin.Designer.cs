@@ -84,7 +84,10 @@ namespace sistemaDeGestionAutomotriz.Forms
             this.comboBoxDemoUsuarios.FormattingEnabled = true;
             this.comboBoxDemoUsuarios.Items.AddRange(new object[] {
             "Administrador",
-            "Técnico"});
+            "Técnico",
+            "Instalador",
+            "Cotizador",
+            "Deposito"});
             this.comboBoxDemoUsuarios.Location = new System.Drawing.Point(334, 279);
             this.comboBoxDemoUsuarios.Name = "comboBoxDemoUsuarios";
             this.comboBoxDemoUsuarios.Size = new System.Drawing.Size(167, 21);
