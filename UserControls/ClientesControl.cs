@@ -24,6 +24,8 @@ namespace sistemaDeGestionAutomotriz.UserControls
         private TextBox _txtBuscar;
         private DataGridView _grilla;
         private Label _lblVacio;
+        private DataGridViewButtonColumn _colEditar;
+        private DataGridViewButtonColumn _colEliminar;
 
         public ClientesControl()
         {
@@ -47,6 +49,12 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.Columns.Add(ColumnaTexto("Telefono", "Teléfono"));
             _grilla.Columns.Add(ColumnaTexto("Email", "Email"));
             _grilla.Columns.Add(ColumnaTexto("Dni", "DNI"));
+            // Columnas de acción (botones-ícono) por fila: editar y dar de baja.
+            _colEditar = ColumnaAccion(Tema.Iconos.Editar);
+            _colEliminar = ColumnaAccion(Tema.Iconos.Eliminar);
+            _grilla.Columns.Add(_colEditar);
+            _grilla.Columns.Add(_colEliminar);
+            _grilla.CellContentClick += Grilla_CellContentClick;
 
             // ---- Estado vacío (mismo lugar que la grilla; mostramos uno u otro) ----
             _lblVacio = new Label
@@ -108,6 +116,23 @@ namespace sistemaDeGestionAutomotriz.UserControls
             };
         }
 
+        /// <summary>Crea una columna con un botón-ícono (editar / dar de baja) por fila.</summary>
+        private DataGridViewButtonColumn ColumnaAccion(string glifo)
+        {
+            var col = new DataGridViewButtonColumn
+            {
+                Text = glifo,
+                UseColumnTextForButtonValue = true,   // el mismo ícono en todas las filas
+                HeaderText = "",
+                Width = 44,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,   // ancho fijo, no se estira
+                FlatStyle = FlatStyle.Flat
+            };
+            col.DefaultCellStyle.Font = Tema.FuenteIcono(11F);
+            col.DefaultCellStyle.ForeColor = Tema.TextoSecundario;
+            return col;
+        }
+
         /// <summary>Trae los clientes del backend y refresca la pantalla.</summary>
         private void CargarClientes()
         {
@@ -162,6 +187,44 @@ namespace sistemaDeGestionAutomotriz.UserControls
                     CargarClientes();   // refrescamos para ver el nuevo cliente
                 }
             }
+        }
+
+        /// <summary>Cuando se clickea el ícono de editar o de dar de baja de una fila.</summary>
+        private void Grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            Cliente cliente = _grilla.Rows[e.RowIndex].DataBoundItem as Cliente;
+            if (cliente == null) return;
+
+            if (e.ColumnIndex == _colEditar.Index) EditarCliente(cliente);
+            else if (e.ColumnIndex == _colEliminar.Index) DarDeBaja(cliente);
+        }
+
+        /// <summary>Abre el formulario con los datos del cliente y guarda los cambios.</summary>
+        private void EditarCliente(Cliente cliente)
+        {
+            using (FormCliente form = new FormCliente(cliente))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    // ActualizarCliente ya muestra su propio aviso.
+                    _service.ActualizarCliente(form.Cliente);
+                    CargarClientes();
+                }
+            }
+        }
+
+        /// <summary>Da de baja (baja lógica) al cliente, con confirmación previa.</summary>
+        private void DarDeBaja(Cliente cliente)
+        {
+            bool confirma = Avisos.Confirmar(
+                "¿Dar de baja a " + cliente.Nombre + " " + cliente.Apellido +
+                "?\r\nDejará de aparecer en la lista de clientes activos.");
+            if (!confirma) return;
+
+            // DarDeBajaCliente ya muestra su propio aviso.
+            _service.DarDeBajaCliente(cliente.ClienteId);
+            CargarClientes();
         }
     }
 }
