@@ -112,7 +112,7 @@ Todas las pantallas comparten un mismo esqueleto:
 
 ## 10. Modo claro y oscuro
 
-La interfaz contempla ambos modos. Cada color de la paleta define su valor para claro y para oscuro; el cambio de modo conmuta todos los colores manteniendo el contraste (el texto siempre contrasta con su fondo).
+La interfaz contempla ambos modos. Cada color de la paleta define su valor para claro y para oscuro; el cambio de modo conmuta todos los colores manteniendo el contraste (el texto siempre contrasta con su fondo). El menú lateral incluye un interruptor que alterna entre claro y oscuro en vivo, repintando el menú y la pantalla activa.
 
 ---
 
@@ -139,4 +139,16 @@ Aplica el molde común (sección 7):
 - **Cuerpo:** tabla con las columnas Nombre, Apellido, Teléfono, Email y DNI. Si no hay registros, se muestra el estado vacío.
 - **Alta / edición:** en una ventana aparte (`FormCliente`) con los campos del cliente y validación de los obligatorios.
 
-El alta y el listado operan contra el servicio de clientes del backend. Las acciones de editar y eliminar quedan previstas para cuando el backend exponga esas operaciones.
+El alta, el listado, la edición y la baja operan contra el servicio de clientes del backend. La eliminación es una **baja lógica** (`dar de baja`): el cliente se marca inactivo y deja de listarse, conservando su registro e historial.
+
+---
+
+## 14. Pantalla de Ventas
+
+Aplica el molde común. Encabezado con título "Ventas de insumos" y contador; buscador por cliente o insumo; tabla con N°, Cliente, Insumo, Cantidad, Total (formato moneda) y Fecha. Es de solo lectura hasta que el backend permita registrar ventas.
+
+---
+
+## 15. Pantalla de Cotizaciones
+
+Aplica el molde común. Encabezado con título "Cotizaciones pendientes" y contador; buscador por cliente o servicio; tabla con N°, Cliente, Servicio, Categoría, Estado y Precio. La columna Estado se pinta con el color de su familia (sección 3), reutilizando el sistema de estados.
