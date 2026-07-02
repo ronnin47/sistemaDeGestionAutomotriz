@@ -159,12 +159,12 @@
       <DependentUpon>FormPrincipal.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Cliente.cs" />
-<<<<<<< HEAD
+
     <Compile Include="Models\GarantiaDto.cs" />
-=======
+
     <Compile Include="Models\CotizacionPendienteDto.cs" />
     <Compile Include="Models\Insumo.cs" />
->>>>>>> origin/master
+
     <Compile Include="Models\OrdenTrabajoDto.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Usuario.cs" />
@@ -172,12 +172,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClienteService.cs" />
-<<<<<<< HEAD
+
     <Compile Include="Services\GarantiaService.cs" />
-=======
+
     <Compile Include="Services\CotizacionService.cs" />
     <Compile Include="Services\InsumoService.cs" />
->>>>>>> origin/master
     <Compile Include="Services\OrdenTrabajoService.cs" />
     <Compile Include="Services\SessionService.cs" />
     <Compile Include="Services\UsuarioService.cs" />
