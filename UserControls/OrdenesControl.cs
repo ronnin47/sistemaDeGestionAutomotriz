@@ -10,10 +10,14 @@ using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Services;
 using sistemaDeGestionAutomotriz.Models;
 
+using System.Globalization;
+
+
 namespace sistemaDeGestionAutomotriz.UserControls
 {
     public partial class OrdenesControl : UserControl
     {
+        private List<OrdenTrabajoDto> _ordenes = new List<OrdenTrabajoDto>();
         public OrdenesControl()
         {
             InitializeComponent();
@@ -26,44 +30,34 @@ namespace sistemaDeGestionAutomotriz.UserControls
             dgvOrdenesTrabajo.AllowUserToDeleteRows = false;
             dgvOrdenesTrabajo.AllowUserToResizeRows = false;
             CargarOrdenes();
+
+            comboBoxFilterTipo.SelectedItem = "Todos";
         }
 
         private void CargarOrdenes()
         {
             OrdenTrabajoService servicio = new OrdenTrabajoService();
 
-           //dgvOrdenesTrabajo.DataSource = servicio.ObtenerOrdenesTrabajo();
+            _ordenes = servicio.ObtenerOrdenesTrabajo();
 
-            List<OrdenTrabajoDto> ordenes = servicio.ObtenerOrdenesTrabajo();
+            dgvOrdenesTrabajo.DataSource = _ordenes;
 
-            dgvOrdenesTrabajo.DataSource = ordenes;
+            labelActivas.Text = _ordenes.Count(o =>
+                o.Estado != "Entregado" &&
+                o.Estado != "Dado de baja").ToString();
 
-
-
-            labelActivas.Text = ordenes.Count(o =>
-       o.Estado != "Entregado" &&
-       o.Estado != "Dado de baja").ToString();
-
-            labelModulos.Text = ordenes.Count(o =>
+            labelModulos.Text = _ordenes.Count(o =>
                 o.Categoria == "Módulo").ToString();
 
-            labelCerrajeria.Text = ordenes.Count(o =>
+            labelCerrajeria.Text = _ordenes.Count(o =>
                 o.Categoria == "Cerrajería").ToString();
 
-            labelInstalaciones.Text = ordenes.Count(o =>
+            labelInstalaciones.Text = _ordenes.Count(o =>
                 o.Categoria == "Instalaciones").ToString();
 
             labelAlertaStock.Text = "0";
 
-
-
-
-
-            //-----------
-
-
-            //forma para renderizar lo que quiera ocultar columnas
-
+            // Forma para renderizar lo que quiera ocultar columnas
             dgvOrdenesTrabajo.Columns["Detalle"].Visible = false;
             dgvOrdenesTrabajo.Columns["Diagnostico"].Visible = false;
             dgvOrdenesTrabajo.Columns["Telefono"].Visible = false;
@@ -101,6 +95,27 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
 
 
+     
+
+
+        private void comboBoxFilterTipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            string categoria = Normalizar(comboBoxFilterTipo.Text);
+
+            if (comboBoxFilterTipo.Text == "Todos")
+            {
+                dgvOrdenesTrabajo.DataSource = _ordenes;
+            }
+            else
+            {
+                dgvOrdenesTrabajo.DataSource = _ordenes
+                 .Where(o => Normalizar(o.Categoria) == categoria)
+                 .ToList();
+            }
+        }
+
+        
 
 
 
@@ -108,19 +123,22 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
 
 
-        // son estos
-        //labelActivas.Text
-        //labelAlertasStock.Text
-        //labelIntalaciones.Text
-        //labelCerrajeria.Text
-        //labelModulos.Text
 
+        private string Normalizar(string texto)
+        {
+            string normalizado = texto.Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder();
 
+            foreach (char c in normalizado)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c);
+                }
+            }
 
-
-
-
-
+            return sb.ToString().Normalize(NormalizationForm.FormC).ToLower().Trim();
+        }
 
 
 
