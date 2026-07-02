@@ -17,6 +17,9 @@ namespace sistemaDeGestionAutomotriz
     public partial class FormPrincipal : Form
     {
         private Usuario _usuario;
+        private Label _tituloMenu;
+        private Button _btnModo;
+        private Func<UserControl> _pantallaActual;   // para poder recrear la pantalla al cambiar de tema
 
         public FormPrincipal()
         {
@@ -34,8 +37,7 @@ namespace sistemaDeGestionAutomotriz
             AplicarTema();
         }
 
-        // En el evento Load para que aplique con cualquiera de los dos constructores.
-        // Por código (no en el Designer) para que Visual Studio no lo pise.
+        // Aplica el tema al menú. Es idempotente: se puede volver a llamar al cambiar de modo.
         private void AplicarTema()
         {
             panelContenido.BackColor = Tema.FondoApp;
@@ -45,17 +47,20 @@ namespace sistemaDeGestionAutomotriz
             panelMenu.BorderStyle = BorderStyle.None;
             panelMenu.Width = 200;
 
-            Label titulo = new Label
+            if (_tituloMenu == null)
             {
-                Text = "Gestión Pro",
-                ForeColor = Tema.TextoSobrePrimario,
-                Font = new Font("Segoe UI", 14F, FontStyle.Bold),
-                TextAlign = ContentAlignment.MiddleLeft,
-                Padding = new Padding(18, 0, 0, 0),
-                Size = new Size(panelMenu.Width, 56),
-                Location = new Point(0, 0)
-            };
-            panelMenu.Controls.Add(titulo);
+                _tituloMenu = new Label
+                {
+                    Text = "Gestión Pro",
+                    ForeColor = Tema.TextoSobrePrimario,
+                    Font = new Font("Segoe UI", 14F, FontStyle.Bold),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Padding = new Padding(18, 0, 0, 0),
+                    Size = new Size(panelMenu.Width, 56),
+                    Location = new Point(0, 0)
+                };
+                panelMenu.Controls.Add(_tituloMenu);
+            }
 
             Button[] navegacion = { buttonOrdenes, buttonClientes, buttonVentas, buttonCotizaciones, buttonGarantias };
             int y = 72;
@@ -67,6 +72,18 @@ namespace sistemaDeGestionAutomotriz
                 y += 46;
             }
 
+            if (_btnModo == null)
+            {
+                _btnModo = new Button();
+                _btnModo.Click += (s, e) => AlternarModo();
+                panelMenu.Controls.Add(_btnModo);
+            }
+            Tema.EstiloBotonMenu(_btnModo);
+            _btnModo.Text = Tema.ModoOscuro ? "Modo claro" : "Modo oscuro";
+            _btnModo.Size = new Size(panelMenu.Width, 46);
+            _btnModo.Location = new Point(0, panelMenu.Height - 104);
+            _btnModo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+
             Tema.EstiloBotonMenu(buttonLogOut);
             buttonLogOut.Text = "Cerrar sesión";
             buttonLogOut.ForeColor = ColorTranslator.FromHtml("#F2B8B8");
@@ -74,6 +91,20 @@ namespace sistemaDeGestionAutomotriz
             buttonLogOut.Size = new Size(panelMenu.Width, 46);
             buttonLogOut.Location = new Point(0, panelMenu.Height - 58);
             buttonLogOut.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+        }
+
+        private void AlternarModo()
+        {
+            Tema.ModoOscuro = !Tema.ModoOscuro;
+            AplicarTema();
+            if (_pantallaActual != null) MostrarPantallaControl(_pantallaActual());
+        }
+
+        // Recuerda cómo crear la pantalla actual para poder repintarla al cambiar de tema.
+        private void Navegar(Func<UserControl> crear)
+        {
+            _pantallaActual = crear;
+            MostrarPantallaControl(crear());
         }
 
         private void buttonLogOut_Click(object sender, EventArgs e)
@@ -106,27 +137,27 @@ namespace sistemaDeGestionAutomotriz
 
         private void buttonOrdenes_Click(object sender, EventArgs e)
         {
-            MostrarPantallaControl(new OrdenesControl());
+            Navegar(() => new OrdenesControl());
         }
 
         private void buttonVentas_Click(object sender, EventArgs e)
         {
-            MostrarPantallaControl(new VentasControl());
+            Navegar(() => new VentasControl());
         }
 
         private void buttonClientes_Click(object sender, EventArgs e)
         {
-            MostrarPantallaControl(new ClientesControl());
+            Navegar(() => new ClientesControl());
         }
 
         private void buttonCotizaciones_Click(object sender, EventArgs e)
         {
-            MostrarPantallaControl(new CotizacionesControl());
+            Navegar(() => new CotizacionesControl());
         }
 
         private void buttonGarantias_Click(object sender, EventArgs e)
         {
-            MostrarPantallaControl(new GarantiasControl());
+            Navegar(() => new GarantiasControl());
         }
     }
 }

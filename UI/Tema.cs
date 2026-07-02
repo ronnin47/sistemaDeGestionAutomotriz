@@ -209,10 +209,9 @@ namespace sistemaDeGestionAutomotriz.UI
             tabla.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
         }
 
-        /// <summary>Pinta una etiqueta como badge del estado (según su familia de color).</summary>
-        public static void EstiloBadgeEstado(Label etiqueta, string estado)
+        /// <summary>Devuelve los colores (fondo y texto) de la familia de un estado.</summary>
+        public static void ColoresEstado(string estado, out Color fondo, out Color texto)
         {
-            Color fondo, texto;
             switch (estado)
             {
                 case "En diagnóstico":
@@ -230,6 +229,13 @@ namespace sistemaDeGestionAutomotriz.UI
                 default:
                     fondo = EnColaFondo; texto = EnColaTexto; break;
             }
+        }
+
+        /// <summary>Pinta una etiqueta como badge del estado (según su familia de color).</summary>
+        public static void EstiloBadgeEstado(Label etiqueta, string estado)
+        {
+            Color fondo, texto;
+            ColoresEstado(estado, out fondo, out texto);
             etiqueta.Text = estado;
             etiqueta.BackColor = fondo;
             etiqueta.ForeColor = texto;

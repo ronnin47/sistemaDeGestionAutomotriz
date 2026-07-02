@@ -41,6 +41,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.Columns.Add(Columna("Categoria", "Categoría"));
             _grilla.Columns.Add(Columna("Estado", "Estado"));
             _grilla.Columns.Add(Columna("Precio", "Precio", DataGridViewContentAlignment.MiddleRight, "C0"));
+            _grilla.CellFormatting += Grilla_CellFormatting;   // pinta la celda de Estado con su color
 
             _lblVacio = new Label
             {
@@ -94,6 +95,19 @@ namespace sistemaDeGestionAutomotriz.UserControls
             if (alineacion != null) col.DefaultCellStyle.Alignment = alineacion.Value;
             if (formato != null) col.DefaultCellStyle.Format = formato;
             return col;
+        }
+
+        private void Grilla_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (_grilla.Columns[e.ColumnIndex].DataPropertyName == "Estado" && e.Value != null)
+            {
+                Color fondo, texto;
+                Tema.ColoresEstado(e.Value.ToString(), out fondo, out texto);
+                e.CellStyle.BackColor = fondo;
+                e.CellStyle.ForeColor = texto;
+                e.CellStyle.SelectionBackColor = fondo;
+                e.CellStyle.SelectionForeColor = texto;
+            }
         }
 
         private void CargarCotizaciones()
