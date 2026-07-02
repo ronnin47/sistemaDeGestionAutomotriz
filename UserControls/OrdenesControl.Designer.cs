@@ -88,6 +88,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             this.buttonNuevaOrden.TabIndex = 1;
             this.buttonNuevaOrden.Text = "+ Nueva Orden";
             this.buttonNuevaOrden.UseVisualStyleBackColor = true;
+            this.buttonNuevaOrden.Click += new System.EventHandler(this.buttonNuevaOrden_Click);
             // 
             // comboBoxFilterTipo
             // 

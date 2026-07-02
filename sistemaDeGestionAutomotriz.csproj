@@ -140,6 +140,12 @@
     <Compile Include="Forms\FormLogin.Designer.cs">
       <DependentUpon>FormLogin.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormNuevaOrden.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormNuevaOrden.Designer.cs">
+      <DependentUpon>FormNuevaOrden.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormNuevaVenta.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,15 +166,19 @@
     </Compile>
     <Compile Include="Models\Cliente.cs" />
     <Compile Include="Models\CotizacionPendienteDto.cs" />
+    <Compile Include="Models\GarantiaDto.cs" />
     <Compile Include="Models\Insumo.cs" />
+    <Compile Include="Models\OrdenTrabajo.cs" />
     <Compile Include="Models\OrdenTrabajoDto.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Usuario.cs" />
+    <Compile Include="Models\Venta.cs" />
     <Compile Include="Models\VentaInsumosDto.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ClienteService.cs" />
     <Compile Include="Services\CotizacionService.cs" />
+    <Compile Include="Services\GarantiaService.cs" />
     <Compile Include="Services\InsumoService.cs" />
     <Compile Include="Services\OrdenTrabajoService.cs" />
     <Compile Include="Services\SessionService.cs" />
@@ -192,6 +202,24 @@
     <Compile Include="UserControls\GarantiasControl.Designer.cs">
       <DependentUpon>GarantiasControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\NuevaOrdenCerrajeriaControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\NuevaOrdenCerrajeriaControl.Designer.cs">
+      <DependentUpon>NuevaOrdenCerrajeriaControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NuevaOrdenInstalacionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\NuevaOrdenInstalacionControl.Designer.cs">
+      <DependentUpon>NuevaOrdenInstalacionControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NuevaOrdenModuloControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\NuevaOrdenModuloControl.Designer.cs">
+      <DependentUpon>NuevaOrdenModuloControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\OrdenesControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -209,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormLogin.resx">
       <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormNuevaOrden.resx">
+      <DependentUpon>FormNuevaOrden.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormNuevaVenta.resx">
       <DependentUpon>FormNuevaVenta.cs</DependentUpon>
@@ -236,6 +267,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\GarantiasControl.resx">
       <DependentUpon>GarantiasControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\NuevaOrdenCerrajeriaControl.resx">
+      <DependentUpon>NuevaOrdenCerrajeriaControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\NuevaOrdenInstalacionControl.resx">
+      <DependentUpon>NuevaOrdenInstalacionControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\NuevaOrdenModuloControl.resx">
+      <DependentUpon>NuevaOrdenModuloControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\OrdenesControl.resx">
       <DependentUpon>OrdenesControl.cs</DependentUpon>

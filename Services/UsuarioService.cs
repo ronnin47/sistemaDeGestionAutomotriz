@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Npgsql;
 using sistemaDeGestionAutomotriz.Data;
 using sistemaDeGestionAutomotriz.Models;
+using System.Collections.Generic;
 
 
 
@@ -87,6 +88,61 @@ namespace sistemaDeGestionAutomotriz.Services
                 }
             }
         }
+
+
+
+
+        public List<Usuario> ObtenerUsuarios()
+        {
+            List<Usuario> usuarios = new List<Usuario>();
+
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    string sql = @"SELECT
+                                id_usuario,
+                                nombre,
+                                apellido,
+                                email,
+                                password,
+                                rol
+                           FROM usuarios;";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
+
+                    NpgsqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Usuario usuario = new Usuario
+                        {
+                            UsuarioId = Convert.ToInt32(reader["id_usuario"]),
+                            Nombre = reader["nombre"].ToString(),
+                            Apellido = reader["apellido"].ToString(),
+                            Email = reader["email"].ToString(),
+                            Pass = reader["password"].ToString(),
+                            Rol = reader["rol"].ToString()
+                        };
+
+                        usuarios.Add(usuario);
+                    }
+
+                    return usuarios;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al obtener usuarios: " + ex.Message);
+                    return new List<Usuario>();
+                }
+            }
+        }
+
+
+
+
     }
 }
 

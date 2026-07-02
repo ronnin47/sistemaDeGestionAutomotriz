@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Services;
 using sistemaDeGestionAutomotriz.Models;
+using sistemaDeGestionAutomotriz.Forms;
 
 using System.Globalization;
 
@@ -32,6 +33,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             CargarOrdenes();
 
             comboBoxFilterTipo.SelectedItem = "Todos";
+            textBoxBuscador.TextChanged += textBoxBuscador_TextChanged;
         }
 
         private void CargarOrdenes()
@@ -115,14 +117,46 @@ namespace sistemaDeGestionAutomotriz.UserControls
             }
         }
 
-        
 
 
 
 
 
+        //Buscador
+        private void textBoxBuscador_TextChanged(object sender, EventArgs e)
+        {
+            string busqueda = Normalizar(textBoxBuscador.Text);
 
+            if (string.IsNullOrWhiteSpace(busqueda))
+            {
+                dgvOrdenesTrabajo.DataSource = null;
+                dgvOrdenesTrabajo.DataSource = _ordenes;
+                return;
+            }
 
+            dgvOrdenesTrabajo.DataSource = null;
+
+            dgvOrdenesTrabajo.DataSource = _ordenes.Where(o =>
+                   Normalizar(o.NumeroOrden.ToString()).Contains(busqueda) ||
+                   Normalizar(o.Categoria).Contains(busqueda) ||
+                   Normalizar(o.TipoServicio).Contains(busqueda) ||
+                   Normalizar(o.Cliente).Contains(busqueda) ||
+                   Normalizar(o.Dni).Contains(busqueda) ||
+                   Normalizar(o.Telefono).Contains(busqueda) ||
+                   Normalizar(o.Vehiculo).Contains(busqueda) ||
+                   Normalizar(o.TipoModulo).Contains(busqueda) ||
+                   Normalizar(o.Detalle).Contains(busqueda) ||
+                   Normalizar(o.Diagnostico).Contains(busqueda) ||
+                   Normalizar(o.TecnicoAsignado).Contains(busqueda) ||
+                   Normalizar(o.FechaIngreso.ToString("dd/MM/yyyy")).Contains(busqueda) ||
+                   Normalizar(o.Estado).Contains(busqueda) ||
+                   Normalizar(o.Precio.ToString()).Contains(busqueda) ||
+                   Normalizar(o.Observaciones).Contains(busqueda) ||
+                   Normalizar(o.EsReparable.ToString()).Contains(busqueda) ||
+                   Normalizar(o.Garantia.ToString()).Contains(busqueda) ||
+                   Normalizar(o.MotivoGarantia).Contains(busqueda)
+            ).ToList();
+        }
 
         private string Normalizar(string texto)
         {
@@ -142,10 +176,40 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
 
 
+
+
+
+
+
+
+        //es el boton para traer la ventana del cargar nueva orden
+        //entonce al presionar el boton dispara el evento en donde crea la instancia de la ventana
+        //1- me construyo la ventana
+        //2- creo la instancia aca
+        //3 - la muestro 
+        private void buttonNuevaOrden_Click(object sender, EventArgs e)
+        {
+            FormNuevaOrden formNuevaOrden = new FormNuevaOrden();
+
+            formNuevaOrden.FormClosed += (s, args) =>
+            {
+                CargarOrdenes();
+            };
+
+            formNuevaOrden.Show();
+        }
+
+      
+
+
+
+
         //eliminar luego
         private void label1_Click(object sender, EventArgs e)
         {
 
         }
+
+       
     }
 }
