@@ -21,11 +21,7 @@ namespace sistemaDeGestionAutomotriz.Forms
             AplicarTema();
         }
 
-        /// <summary>
-        /// Rearma el login como una tarjeta centrada, siguiendo el sistema de diseño
-        /// (paleta, tipografía, espaciado 4/8/16/24/32 e íconos del Tema). Va por
-        /// código para no pelearse con el diseñador de Visual Studio.
-        /// </summary>
+        // Login como tarjeta centrada, con el tema. Por código (no en el Designer).
         private void AplicarTema()
         {
             BackColor = Tema.FondoApp;
@@ -135,7 +131,6 @@ namespace sistemaDeGestionAutomotriz.Forms
             Resize += (s, e) => CentrarCard();
         }
 
-        /// <summary>Da estilo a una etiqueta de campo y la ubica.</summary>
         private void EstiloEtiqueta(Label etiqueta, string texto, int x, int y)
         {
             etiqueta.Text = texto;
@@ -145,7 +140,7 @@ namespace sistemaDeGestionAutomotriz.Forms
             etiqueta.Location = new Point(x, y);
         }
 
-        /// <summary>Mantiene la tarjeta centrada en la ventana (también al maximizar).</summary>
+        // Mantiene la tarjeta centrada (también al maximizar).
         private void CentrarCard()
         {
             if (_card == null) return;

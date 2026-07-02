@@ -3,42 +3,31 @@ using System.Windows.Forms;
 
 namespace sistemaDeGestionAutomotriz.UI
 {
-    /// <summary>
-    /// Paleta de colores, tipografía, espaciado, íconos y estilos del sistema,
-    /// todo centralizado en un solo lugar. Si hay que cambiar algo del look,
-    /// se cambia ACÁ una vez y se actualiza toda la app.
-    ///
-    /// Soporta modo claro y oscuro: cada color devuelve el valor que corresponde
-    /// según <see cref="ModoOscuro"/>. Por ahora el "interruptor" en vivo no está
-    /// cableado (queda para cuando haya pantallas reales); el mecanismo sí está listo.
-    /// </summary>
+    // Paleta, tipografía, espaciado, íconos y estilos centralizados.
+    // Soporta modo claro y oscuro (cada color tiene sus dos versiones).
     public static class Tema
     {
-        /// <summary>Si está en true, los colores devuelven su versión oscura.</summary>
         public static bool ModoOscuro { get; set; } = false;
 
-        // Devuelve el color claro o el oscuro según el modo actual.
         private static Color C(string claro, string oscuro)
         {
             return ColorTranslator.FromHtml(ModoOscuro ? oscuro : claro);
         }
 
-        // ===== Neutros: la base, ~60% de la pantalla =====
-        // Nunca blanco ni negro puro: cansan la vista en jornadas largas.
+        // Neutros
         public static Color FondoApp => C("#F4F6F8", "#0F1720");
-        public static Color Superficie => C("#FFFFFF", "#1A2430");   // tarjetas y tablas
+        public static Color Superficie => C("#FFFFFF", "#1A2430");
         public static Color Borde => C("#E1E5EA", "#2A3744");
         public static Color TextoPrincipal => C("#1F2933", "#E4E8EC");
         public static Color TextoSecundario => C("#5B6672", "#9AA5B1");
 
-        // ===== Marca: azul acero, ~30% =====
-        public static Color Primario => C("#2D6A8E", "#4A9CC4");        // botones de acción
-        public static Color PrimarioOscuro => C("#1F4E68", "#16202B");  // menú lateral
-        public static Color PrimarioClaro => C("#E8F1F6", "#1E3A4C");   // fila seleccionada / hover suave
+        // Marca
+        public static Color Primario => C("#2D6A8E", "#4A9CC4");
+        public static Color PrimarioOscuro => C("#1F4E68", "#16202B");
+        public static Color PrimarioClaro => C("#E8F1F6", "#1E3A4C");
         public static Color TextoSobrePrimario => C("#FFFFFF", "#FFFFFF");
 
-        // ===== Estados de una orden, ~10% =====
-        // Cada familia es UN significado. En oscuro se invierte (fondo oscuro + texto claro).
+        // Estados de una orden (mismo significado, mismo color)
         public static Color EnColaFondo => C("#E1E5EA", "#2C2C2A");          // Ingresado
         public static Color EnColaTexto => C("#3A4450", "#B4B2A9");
         public static Color EnCursoFondo => C("#E6F1FB", "#103049");         // En diagnóstico / En reparación
@@ -50,38 +39,31 @@ namespace sistemaDeGestionAutomotriz.UI
         public static Color CerradoFondo => C("#FCEBEB", "#501313");         // Rechazado por cliente / Dado de baja
         public static Color CerradoTexto => C("#A32D2D", "#F09595");
 
-        // ===== Tipografía: 5 roles fijos =====
-        // Segoe UI es la fuente nativa de Windows (ya está en todas las máquinas).
-        // Solo dos pesos: normal y negrita.
+        // Tipografía (Segoe UI, nativa de Windows)
         private const string Familia = "Segoe UI";
-        public static readonly Font FuenteTitulo = new Font(Familia, 18F, FontStyle.Bold);     // título de pantalla
-        public static readonly Font FuenteSeccion = new Font(Familia, 12F, FontStyle.Bold);    // encabezado de bloque
-        public static readonly Font FuenteCuerpo = new Font(Familia, 9.75F, FontStyle.Regular); // texto general, celdas, inputs
-        public static readonly Font FuenteEtiqueta = new Font(Familia, 9F, FontStyle.Regular);  // rótulos de campos y columnas
-        public static readonly Font FuenteMenor = new Font(Familia, 8.25F, FontStyle.Regular);  // contadores, ayudas, badges
-        public static readonly Font FuenteBoton = new Font(Familia, 9.75F, FontStyle.Bold);     // texto de botones
+        public static readonly Font FuenteTitulo = new Font(Familia, 18F, FontStyle.Bold);
+        public static readonly Font FuenteSeccion = new Font(Familia, 12F, FontStyle.Bold);
+        public static readonly Font FuenteCuerpo = new Font(Familia, 9.75F, FontStyle.Regular);
+        public static readonly Font FuenteEtiqueta = new Font(Familia, 9F, FontStyle.Regular);
+        public static readonly Font FuenteMenor = new Font(Familia, 8.25F, FontStyle.Regular);
+        public static readonly Font FuenteBoton = new Font(Familia, 9.75F, FontStyle.Bold);
 
-        // ===== Espaciado: un solo ritmo (en píxeles) =====
+        // Espaciado (px)
         public const int EspacioXs = 4;
         public const int EspacioSm = 8;
         public const int EspacioMd = 16;
         public const int EspacioLg = 24;
         public const int EspacioXl = 32;
-        public const int PaddingPantalla = 20;  // padding interno estándar de cada pantalla
-        public const int AltoFila = 34;          // alto cómodo de fila / input / botón
+        public const int PaddingPantalla = 20;
+        public const int AltoFila = 34;
 
-        // ===== Iconografía =====
-        // Usamos "Segoe MDL2 Assets": viene en Windows 10 y 11 (la versión "Fluent"
-        // es su gemela de Win11). Así tenemos íconos sin instalar nada ni usar imágenes.
+        // Íconos: fuente Segoe MDL2 Assets (Windows 10/11), sin dependencias.
         public static Font FuenteIcono(float tam = 12F)
         {
             return new Font("Segoe MDL2 Assets", tam);
         }
 
-        /// <summary>
-        /// Códigos de los íconos que usamos (glifos de la fuente Segoe MDL2 Assets).
-        /// Los generamos desde su número de código para no pegar caracteres invisibles.
-        /// </summary>
+        /// <summary>Glifos de íconos (fuente Segoe MDL2 Assets).</summary>
         public static class Iconos
         {
             public static readonly string Buscar = char.ConvertFromUtf32(0xE721);
@@ -94,9 +76,7 @@ namespace sistemaDeGestionAutomotriz.UI
             public static readonly string Cliente = char.ConvertFromUtf32(0xE77B);
         }
 
-        // ===== Helpers de estilo =====
-
-        /// <summary>Título de una pantalla (texto grande arriba a la izquierda).</summary>
+        /// <summary>Título de una pantalla.</summary>
         public static void EstiloTituloPantalla(Label titulo)
         {
             titulo.Font = FuenteTitulo;
@@ -104,7 +84,7 @@ namespace sistemaDeGestionAutomotriz.UI
             titulo.AutoSize = true;
         }
 
-        /// <summary>Subtítulo / contador debajo del título (texto chico y gris).</summary>
+        /// <summary>Subtítulo / contador debajo del título.</summary>
         public static void EstiloSubtitulo(Label sub)
         {
             sub.Font = FuenteEtiqueta;
@@ -112,10 +92,7 @@ namespace sistemaDeGestionAutomotriz.UI
             sub.AutoSize = true;
         }
 
-        /// <summary>
-        /// Botón del menú lateral: plano, texto claro alineado a la izquierda,
-        /// con resaltado azul al pasar el mouse.
-        /// </summary>
+        /// <summary>Botón del menú lateral (plano, texto claro, hover azul).</summary>
         public static void EstiloBotonMenu(Button boton)
         {
             boton.FlatStyle = FlatStyle.Flat;
@@ -129,7 +106,7 @@ namespace sistemaDeGestionAutomotriz.UI
             boton.Cursor = Cursors.Hand;
         }
 
-        /// <summary>Botón de acción principal (azul lleno, texto blanco).</summary>
+        /// <summary>Botón de acción principal (azul lleno).</summary>
         public static void EstiloBotonPrimario(Button boton)
         {
             boton.FlatStyle = FlatStyle.Flat;
@@ -141,7 +118,7 @@ namespace sistemaDeGestionAutomotriz.UI
             boton.Cursor = Cursors.Hand;
         }
 
-        /// <summary>Botón secundario (blanco con borde, texto azul). Para acciones menos importantes.</summary>
+        /// <summary>Botón secundario (blanco con borde, texto azul).</summary>
         public static void EstiloBotonSecundario(Button boton)
         {
             boton.FlatStyle = FlatStyle.Flat;
@@ -154,7 +131,7 @@ namespace sistemaDeGestionAutomotriz.UI
             boton.Cursor = Cursors.Hand;
         }
 
-        /// <summary>Botón de peligro (ej. "Eliminar"): blanco con borde y texto rojo.</summary>
+        /// <summary>Botón de peligro (borde y texto rojo).</summary>
         public static void EstiloBotonPeligro(Button boton)
         {
             boton.FlatStyle = FlatStyle.Flat;
@@ -167,7 +144,7 @@ namespace sistemaDeGestionAutomotriz.UI
             boton.Cursor = Cursors.Hand;
         }
 
-        /// <summary>Botón solo-ícono (ej. editar/eliminar en una fila de tabla).</summary>
+        /// <summary>Botón solo-ícono (ej. editar/eliminar en una fila).</summary>
         public static void EstiloBotonIcono(Button boton, string glifo)
         {
             boton.Text = glifo;
@@ -181,7 +158,7 @@ namespace sistemaDeGestionAutomotriz.UI
             boton.Size = new Size(32, 28);
         }
 
-        /// <summary>Estilo de una caja de texto: borde simple, fondo blanco, fuente de cuerpo.</summary>
+        /// <summary>Estilo de una caja de texto.</summary>
         public static void EstiloInput(TextBox caja)
         {
             caja.BorderStyle = BorderStyle.FixedSingle;
@@ -190,7 +167,7 @@ namespace sistemaDeGestionAutomotriz.UI
             caja.Font = FuenteCuerpo;
         }
 
-        /// <summary>Estilo de una lista desplegable (combo): plana, fondo blanco.</summary>
+        /// <summary>Estilo de una lista desplegable.</summary>
         public static void EstiloCombo(ComboBox combo)
         {
             combo.FlatStyle = FlatStyle.Flat;
@@ -199,18 +176,14 @@ namespace sistemaDeGestionAutomotriz.UI
             combo.Font = FuenteCuerpo;
         }
 
-        /// <summary>
-        /// Estilo de la tabla (DataGridView), pieza central de casi todas las pantallas:
-        /// encabezado gris suave, solo líneas horizontales, fila seleccionada en azul
-        /// clarito y columnas que llenan el ancho.
-        /// </summary>
+        /// <summary>Estilo de la tabla: encabezado gris, líneas horizontales, fila seleccionada azul.</summary>
         public static void EstiloTabla(DataGridView tabla)
         {
             tabla.BackgroundColor = Superficie;
             tabla.BorderStyle = BorderStyle.None;
             tabla.GridColor = Borde;
-            tabla.EnableHeadersVisualStyles = false;   // para que tome NUESTROS colores de encabezado
-            tabla.RowHeadersVisible = false;           // ocultamos la columna gris de la izquierda
+            tabla.EnableHeadersVisualStyles = false;
+            tabla.RowHeadersVisible = false;
             tabla.AllowUserToAddRows = false;
             tabla.AllowUserToResizeRows = false;
             tabla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -236,11 +209,7 @@ namespace sistemaDeGestionAutomotriz.UI
             tabla.DefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
         }
 
-        /// <summary>
-        /// Convierte una etiqueta en un "badge" de estado: la pinta con el color de
-        /// la familia que corresponde según el texto del estado (reutiliza el sistema
-        /// de 5 familias).
-        /// </summary>
+        /// <summary>Pinta una etiqueta como badge del estado (según su familia de color).</summary>
         public static void EstiloBadgeEstado(Label etiqueta, string estado)
         {
             Color fondo, texto;
@@ -258,7 +227,7 @@ namespace sistemaDeGestionAutomotriz.UI
                 case "Rechazado por cliente":
                 case "Dado de baja":
                     fondo = CerradoFondo; texto = CerradoTexto; break;
-                default:  // "Ingresado" y cualquier otro caen en "en cola"
+                default:
                     fondo = EnColaFondo; texto = EnColaTexto; break;
             }
             etiqueta.Text = estado;

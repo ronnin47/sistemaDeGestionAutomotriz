@@ -12,12 +12,9 @@ namespace sistemaDeGestionAutomotriz.UserControls
 {
     public partial class ClientesControl : UserControl
     {
-        // El servicio es el "puente" con el backend del compañero.
         private readonly ClienteService _service = new ClienteService();
-        // Guardamos la lista completa en memoria para poder filtrar sin volver a la base.
         private List<Cliente> _clientes = new List<Cliente>();
 
-        // Controles que armamos por código.
         private Label _lblTitulo;
         private Label _lblContador;
         private Button _btnNuevo;
@@ -34,29 +31,25 @@ namespace sistemaDeGestionAutomotriz.UserControls
             CargarClientes();
         }
 
-        /// <summary>Arma toda la pantalla por código, aplicando el tema y el molde común.</summary>
         private void ConstruirUI()
         {
             BackColor = Tema.FondoApp;
             Padding = new Padding(Tema.PaddingPantalla);
 
-            // ---- Cuerpo: la grilla (se agrega primero para que el Fill ocupe lo que sobra) ----
             _grilla = new DataGridView { Dock = DockStyle.Fill };
             Tema.EstiloTabla(_grilla);
-            _grilla.AutoGenerateColumns = false;   // definimos nosotros las columnas, no todas las del modelo
+            _grilla.AutoGenerateColumns = false;
             _grilla.Columns.Add(ColumnaTexto("Nombre", "Nombre"));
             _grilla.Columns.Add(ColumnaTexto("Apellido", "Apellido"));
             _grilla.Columns.Add(ColumnaTexto("Telefono", "Teléfono"));
             _grilla.Columns.Add(ColumnaTexto("Email", "Email"));
             _grilla.Columns.Add(ColumnaTexto("Dni", "DNI"));
-            // Columnas de acción (botones-ícono) por fila: editar y dar de baja.
             _colEditar = ColumnaAccion(Tema.Iconos.Editar);
             _colEliminar = ColumnaAccion(Tema.Iconos.Eliminar);
             _grilla.Columns.Add(_colEditar);
             _grilla.Columns.Add(_colEliminar);
             _grilla.CellContentClick += Grilla_CellContentClick;
 
-            // ---- Estado vacío (mismo lugar que la grilla; mostramos uno u otro) ----
             _lblVacio = new Label
             {
                 Dock = DockStyle.Fill,
@@ -67,7 +60,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 Visible = false
             };
 
-            // ---- Barra de herramientas: buscador ----
             Panel toolbar = new Panel { Dock = DockStyle.Top, Height = 50, BackColor = Tema.FondoApp };
             Label lblBuscar = new Label
             {
@@ -83,7 +75,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             toolbar.Controls.Add(lblBuscar);
             toolbar.Controls.Add(_txtBuscar);
 
-            // ---- Encabezado: título + contador + botón "Nuevo cliente" ----
             Panel header = new Panel { Dock = DockStyle.Top, Height = 58, BackColor = Tema.FondoApp };
             _lblTitulo = new Label { Text = "Clientes", Location = new Point(0, 0) };
             Tema.EstiloTituloPantalla(_lblTitulo);
@@ -95,37 +86,34 @@ namespace sistemaDeGestionAutomotriz.UserControls
             header.Controls.Add(_lblTitulo);
             header.Controls.Add(_lblContador);
             header.Controls.Add(_btnNuevo);
-            // Mantener el botón pegado a la derecha cuando cambia el tamaño de la pantalla.
             header.Resize += (s, e) => { _btnNuevo.Left = header.ClientSize.Width - _btnNuevo.Width; };
 
-            // Orden de agregado: el Fill primero; los Top después (el último queda más arriba).
+            // Fill primero; los Top después (el último queda arriba de todo).
             Controls.Add(_grilla);
             Controls.Add(_lblVacio);
             Controls.Add(toolbar);
             Controls.Add(header);
         }
 
-        /// <summary>Crea una columna de texto de la grilla mapeada a una propiedad del Cliente.</summary>
         private DataGridViewTextBoxColumn ColumnaTexto(string propiedad, string titulo)
         {
             return new DataGridViewTextBoxColumn
             {
-                DataPropertyName = propiedad,   // de qué campo del Cliente saca el valor
-                HeaderText = titulo,            // qué muestra en el encabezado
+                DataPropertyName = propiedad,
+                HeaderText = titulo,
                 SortMode = DataGridViewColumnSortMode.NotSortable
             };
         }
 
-        /// <summary>Crea una columna con un botón-ícono (editar / dar de baja) por fila.</summary>
         private DataGridViewButtonColumn ColumnaAccion(string glifo)
         {
             var col = new DataGridViewButtonColumn
             {
                 Text = glifo,
-                UseColumnTextForButtonValue = true,   // el mismo ícono en todas las filas
+                UseColumnTextForButtonValue = true,
                 HeaderText = "",
                 Width = 44,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,   // ancho fijo, no se estira
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
                 FlatStyle = FlatStyle.Flat
             };
             col.DefaultCellStyle.Font = Tema.FuenteIcono(11F);
@@ -133,16 +121,12 @@ namespace sistemaDeGestionAutomotriz.UserControls
             return col;
         }
 
-        /// <summary>Trae los clientes del backend y refresca la pantalla.</summary>
         private void CargarClientes()
         {
-            // Si falla la conexión, el servicio del compañero ya muestra su propio aviso
-            // y devuelve una lista vacía, así que acá no hace falta otro try/catch.
             _clientes = _service.ObtenerClientesActivos() ?? new List<Cliente>();
             AplicarFiltro();
         }
 
-        /// <summary>Filtra la lista según el buscador y la vuelca en la grilla.</summary>
         private void AplicarFiltro()
         {
             string q = (_txtBuscar.Text ?? "").Trim().ToLower();
@@ -157,7 +141,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.DataSource = null;
             _grilla.DataSource = visibles;
 
-            // Si no hay ningún cliente, mostramos el estado vacío en lugar de la grilla.
             bool sinClientes = _clientes.Count == 0;
             _grilla.Visible = !sinClientes;
             _lblVacio.Visible = sinClientes;
@@ -165,7 +148,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             ActualizarContador(visibles.Count);
         }
 
-        /// <summary>Actualiza el subtítulo con la cantidad de clientes (o cuántos coinciden con el filtro).</summary>
         private void ActualizarContador(int visibles)
         {
             int total = _clientes.Count;
@@ -175,21 +157,18 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 _lblContador.Text = visibles + " de " + total + " clientes";
         }
 
-        /// <summary>Abre el formulario de alta y, si se confirma, lo agrega vía el backend.</summary>
         private void NuevoCliente()
         {
             using (FormCliente form = new FormCliente())
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    // AgregarCliente ya muestra su propio aviso de éxito/error.
                     _service.AgregarCliente(form.Cliente);
-                    CargarClientes();   // refrescamos para ver el nuevo cliente
+                    CargarClientes();
                 }
             }
         }
 
-        /// <summary>Cuando se clickea el ícono de editar o de dar de baja de una fila.</summary>
         private void Grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -200,21 +179,18 @@ namespace sistemaDeGestionAutomotriz.UserControls
             else if (e.ColumnIndex == _colEliminar.Index) DarDeBaja(cliente);
         }
 
-        /// <summary>Abre el formulario con los datos del cliente y guarda los cambios.</summary>
         private void EditarCliente(Cliente cliente)
         {
             using (FormCliente form = new FormCliente(cliente))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    // ActualizarCliente ya muestra su propio aviso.
                     _service.ActualizarCliente(form.Cliente);
                     CargarClientes();
                 }
             }
         }
 
-        /// <summary>Da de baja (baja lógica) al cliente, con confirmación previa.</summary>
         private void DarDeBaja(Cliente cliente)
         {
             bool confirma = Avisos.Confirmar(
@@ -222,7 +198,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 "?\r\nDejará de aparecer en la lista de clientes activos.");
             if (!confirma) return;
 
-            // DarDeBajaCliente ya muestra su propio aviso.
             _service.DarDeBajaCliente(cliente.ClienteId);
             CargarClientes();
         }
