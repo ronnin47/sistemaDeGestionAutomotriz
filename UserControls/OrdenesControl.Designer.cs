@@ -31,7 +31,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
         {
             this.label1 = new System.Windows.Forms.Label();
             this.buttonNuevaOrden = new System.Windows.Forms.Button();
-            this.comboBoxTipo = new System.Windows.Forms.ComboBox();
+            this.comboBoxFilterTipo = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxBuscador = new System.Windows.Forms.TextBox();
@@ -89,17 +89,19 @@ namespace sistemaDeGestionAutomotriz.UserControls
             this.buttonNuevaOrden.Text = "+ Nueva Orden";
             this.buttonNuevaOrden.UseVisualStyleBackColor = true;
             // 
-            // comboBoxTipo
+            // comboBoxFilterTipo
             // 
-            this.comboBoxTipo.FormattingEnabled = true;
-            this.comboBoxTipo.Items.AddRange(new object[] {
-            "Módulos",
+            this.comboBoxFilterTipo.FormattingEnabled = true;
+            this.comboBoxFilterTipo.Items.AddRange(new object[] {
+            "Todos",
+            "Módulo",
             "Cerrajería",
             "Instalaciones"});
-            this.comboBoxTipo.Location = new System.Drawing.Point(198, 59);
-            this.comboBoxTipo.Name = "comboBoxTipo";
-            this.comboBoxTipo.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxTipo.TabIndex = 2;
+            this.comboBoxFilterTipo.Location = new System.Drawing.Point(198, 59);
+            this.comboBoxFilterTipo.Name = "comboBoxFilterTipo";
+            this.comboBoxFilterTipo.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxFilterTipo.TabIndex = 2;
+            this.comboBoxFilterTipo.SelectedIndexChanged += new System.EventHandler(this.comboBoxFilterTipo_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -441,7 +443,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             this.Controls.Add(this.textBoxBuscador);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBoxTipo);
+            this.Controls.Add(this.comboBoxFilterTipo);
             this.Controls.Add(this.buttonNuevaOrden);
             this.Controls.Add(this.label1);
             this.Name = "OrdenesControl";
@@ -460,7 +462,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonNuevaOrden;
-        private System.Windows.Forms.ComboBox comboBoxTipo;
+        private System.Windows.Forms.ComboBox comboBoxFilterTipo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxBuscador;
