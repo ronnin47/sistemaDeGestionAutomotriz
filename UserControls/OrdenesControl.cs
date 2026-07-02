@@ -21,6 +21,10 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
         private void OrdenesControl_Load(object sender, EventArgs e)
         {
+            dgvOrdenesTrabajo.ReadOnly = true;
+            dgvOrdenesTrabajo.AllowUserToAddRows = false;
+            dgvOrdenesTrabajo.AllowUserToDeleteRows = false;
+            dgvOrdenesTrabajo.AllowUserToResizeRows = false;
             CargarOrdenes();
         }
 
@@ -28,7 +32,34 @@ namespace sistemaDeGestionAutomotriz.UserControls
         {
             OrdenTrabajoService servicio = new OrdenTrabajoService();
 
-            dgvOrdenesTrabajo.DataSource = servicio.ObtenerOrdenesTrabajo();
+           //dgvOrdenesTrabajo.DataSource = servicio.ObtenerOrdenesTrabajo();
+
+            List<OrdenTrabajoDto> ordenes = servicio.ObtenerOrdenesTrabajo();
+
+            dgvOrdenesTrabajo.DataSource = ordenes;
+
+
+
+            labelActivas.Text = ordenes.Count(o =>
+       o.Estado != "Entregado" &&
+       o.Estado != "Dado de baja").ToString();
+
+            labelModulos.Text = ordenes.Count(o =>
+                o.Categoria == "Módulo").ToString();
+
+            labelCerrajeria.Text = ordenes.Count(o =>
+                o.Categoria == "Cerrajería").ToString();
+
+            labelInstalaciones.Text = ordenes.Count(o =>
+                o.Categoria == "Instalaciones").ToString();
+
+            labelAlertaStock.Text = "0";
+
+
+
+
+
+            //-----------
 
 
             //forma para renderizar lo que quiera ocultar columnas
@@ -77,9 +108,12 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
 
 
-
-
-
+        // son estos
+        //labelActivas.Text
+        //labelAlertasStock.Text
+        //labelIntalaciones.Text
+        //labelCerrajeria.Text
+        //labelModulos.Text
 
 
 
