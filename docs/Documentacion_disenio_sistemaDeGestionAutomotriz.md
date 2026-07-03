@@ -145,10 +145,16 @@ El alta, el listado, la edición y la baja operan contra el servicio de clientes
 
 ## 14. Pantalla de Ventas
 
-Aplica el molde común. Encabezado con título "Ventas de insumos" y contador; buscador por cliente o insumo; tabla con N°, Cliente, Insumo, Cantidad, Total (formato moneda) y Fecha. Es de solo lectura hasta que el backend permita registrar ventas.
+Aplica el molde común. Encabezado con título "Ventas de insumos", contador y botón "Nueva venta"; buscador por cliente o insumo; tabla con N°, Cliente, Insumo, Cantidad, Total (formato moneda) y Fecha. El alta (`FormVenta`) permite elegir cliente e insumo, indicar la cantidad y calcula el total automáticamente; muestra el stock disponible junto a cada insumo y no deja vender más de lo disponible. Al registrar, el backend descuenta el stock.
 
 ---
 
 ## 15. Pantalla de Cotizaciones
 
 Aplica el molde común. Encabezado con título "Cotizaciones pendientes" y contador; buscador por cliente o servicio; tabla con N°, Cliente, Servicio, Categoría, Estado y Precio. La columna Estado se pinta con el color de su familia (sección 3), reutilizando el sistema de estados.
+
+---
+
+## 16. Pantalla de Garantías
+
+Aplica el molde común. Encabezado con título "Garantías" y contador; buscador por cliente o técnico asignado; tabla con N° Orden, Cliente, Detalle, Asignado, Estado y Condición. La columna Estado se pinta con el color de su familia. Es de solo lectura.
