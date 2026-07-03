@@ -8,13 +8,15 @@ using sistemaDeGestionAutomotriz.UI;
 
 namespace sistemaDeGestionAutomotriz.Forms
 {
-    // Alta de una orden de trabajo. Un solo form con selector de grupo
-    // (Módulo / Cerrajería / Instalación); los campos específicos cambian según el grupo.
+    // Alta de una orden de trabajo. Selector de grupo (Módulo / Cerrajería / Instalación)
+    // con botones; los campos específicos cambian según el grupo elegido.
     public class FormOrden : Form
     {
         private readonly OrdenTrabajoService _ordenService = new OrdenTrabajoService();
 
-        private ComboBox _cboGrupo, _cboCliente, _cboTecnico;
+        private Button _btnModulo, _btnCerrajeria, _btnInstalacion;
+        private string _grupo = "Módulo";
+        private ComboBox _cboCliente, _cboTecnico;
         private Panel _panelEspecifico;
         private TextBox _txtObservaciones;
         private Button _btnGuardar, _btnCancelar;
@@ -24,7 +26,7 @@ namespace sistemaDeGestionAutomotriz.Forms
         {
             ConstruirUI();
             CargarCombos();
-            ArmarCamposGrupo();
+            SeleccionarGrupo("Módulo");
         }
 
         private void ConstruirUI()
@@ -34,40 +36,62 @@ namespace sistemaDeGestionAutomotriz.Forms
             StartPosition = FormStartPosition.CenterParent;
             MaximizeBox = false;
             MinimizeBox = false;
-            ClientSize = new Size(458, 452);
+            ClientSize = new Size(458, 470);
             BackColor = Tema.FondoApp;
             Font = Tema.FuenteCuerpo;
 
             Controls.Add(new Label { Text = "Nueva orden", Location = new Point(24, 16), AutoSize = true, Font = Tema.FuenteTitulo, ForeColor = Tema.TextoPrincipal });
 
+            // Selector de grupo con 3 botones (segmentado).
             Etiqueta("Grupo", 24, 54);
-            _cboGrupo = Combo(24, 72, 410);
-            _cboGrupo.Items.AddRange(new object[] { "Módulo", "Cerrajería", "Instalación" });
-            _cboGrupo.SelectedIndex = 0;
-            _cboGrupo.SelectedIndexChanged += (s, e) => ArmarCamposGrupo();
+            _btnModulo = BotonGrupo("Módulo", 24, 132);
+            _btnCerrajeria = BotonGrupo("Cerrajería", 163, 132);
+            _btnInstalacion = BotonGrupo("Instalación", 302, 132);
 
-            Etiqueta("Cliente", 24, 108);
-            _cboCliente = Combo(24, 126, 200);
-            Etiqueta("Técnico asignado", 240, 108);
-            _cboTecnico = Combo(240, 126, 194);
+            Etiqueta("Cliente", 24, 112);
+            _cboCliente = Combo(24, 130, 200);
+            Etiqueta("Técnico asignado", 240, 112);
+            _cboTecnico = Combo(240, 130, 194);
 
-            _panelEspecifico = new Panel { Location = new Point(24, 168), Size = new Size(410, 150), BackColor = Tema.FondoApp };
+            _panelEspecifico = new Panel { Location = new Point(24, 170), Size = new Size(410, 158), BackColor = Tema.FondoApp };
             Controls.Add(_panelEspecifico);
 
-            Etiqueta("Observaciones", 24, 322);
-            _txtObservaciones = new TextBox { Location = new Point(24, 340), Width = 410, Height = 50, Multiline = true };
+            Etiqueta("Observaciones", 24, 338);
+            _txtObservaciones = new TextBox { Location = new Point(24, 356), Width = 410, Height = 50, Multiline = true };
             Tema.EstiloInput(_txtObservaciones);
             Controls.Add(_txtObservaciones);
 
-            _btnGuardar = new Button { Text = "Guardar", Size = new Size(96, 34), Location = new Point(338, 404), Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
+            _btnGuardar = new Button { Text = "Guardar", Size = new Size(96, 34), Location = new Point(338, 422), Anchor = AnchorStyles.Bottom | AnchorStyles.Right };
             Tema.EstiloBotonPrimario(_btnGuardar);
             _btnGuardar.Click += (s, e) => Guardar();
-            _btnCancelar = new Button { Text = "Cancelar", Size = new Size(96, 34), Location = new Point(234, 404), Anchor = AnchorStyles.Bottom | AnchorStyles.Right, DialogResult = DialogResult.Cancel };
+            _btnCancelar = new Button { Text = "Cancelar", Size = new Size(96, 34), Location = new Point(234, 422), Anchor = AnchorStyles.Bottom | AnchorStyles.Right, DialogResult = DialogResult.Cancel };
             Tema.EstiloBotonSecundario(_btnCancelar);
             Controls.Add(_btnGuardar);
             Controls.Add(_btnCancelar);
             AcceptButton = _btnGuardar;
             CancelButton = _btnCancelar;
+        }
+
+        private Button BotonGrupo(string texto, int x, int ancho)
+        {
+            Button b = new Button { Text = texto, Location = new Point(x, 72), Size = new Size(ancho, 34) };
+            b.Click += (s, e) => SeleccionarGrupo(texto);
+            Controls.Add(b);
+            return b;
+        }
+
+        // Marca el grupo elegido (botón primario) y rearma los campos específicos.
+        private void SeleccionarGrupo(string grupo)
+        {
+            _grupo = grupo;
+            Tema.EstiloBotonSecundario(_btnModulo);
+            Tema.EstiloBotonSecundario(_btnCerrajeria);
+            Tema.EstiloBotonSecundario(_btnInstalacion);
+            if (grupo == "Módulo") Tema.EstiloBotonPrimario(_btnModulo);
+            else if (grupo == "Cerrajería") Tema.EstiloBotonPrimario(_btnCerrajeria);
+            else Tema.EstiloBotonPrimario(_btnInstalacion);
+
+            ArmarCamposGrupo();
         }
 
         private void CargarCombos()
@@ -83,14 +107,12 @@ namespace sistemaDeGestionAutomotriz.Forms
             _cboTecnico.DataSource = usuarios;
         }
 
-        // Rearma los campos específicos según el grupo elegido.
         private void ArmarCamposGrupo()
         {
             _panelEspecifico.Controls.Clear();
             _campos.Clear();
 
-            string grupo = _cboGrupo.SelectedItem != null ? _cboGrupo.SelectedItem.ToString() : "Módulo";
-            if (grupo == "Módulo")
+            if (_grupo == "Módulo")
             {
                 CampoEspecifico("TipoModulo", "Tipo de módulo", 0, 0);
                 CampoEspecifico("Marca", "Marca", 215, 0);
@@ -130,10 +152,9 @@ namespace sistemaDeGestionAutomotriz.Forms
 
             Cliente cli = ic.Cliente;
             int idTecnico = (int)_cboTecnico.SelectedValue;
-            string grupo = _cboGrupo.SelectedItem.ToString();
             bool ok;
 
-            if (grupo == "Módulo")
+            if (_grupo == "Módulo")
             {
                 ok = _ordenService.CrearNuevaOrden(new OrdenTrabajo
                 {
@@ -155,7 +176,7 @@ namespace sistemaDeGestionAutomotriz.Forms
                     Garantia = false
                 });
             }
-            else if (grupo == "Cerrajería")
+            else if (_grupo == "Cerrajería")
             {
                 ok = _ordenService.CrearNuevaOrdenCerrajeria(new OrdenTrabajoCerrajeria
                 {
@@ -194,7 +215,6 @@ namespace sistemaDeGestionAutomotriz.Forms
                 });
             }
 
-            // Los métodos Crear* devuelven true/false y muestran su propio aviso si falla.
             if (ok)
             {
                 DialogResult = DialogResult.OK;
@@ -202,7 +222,6 @@ namespace sistemaDeGestionAutomotriz.Forms
             }
         }
 
-        // Envuelve un cliente para mostrar "Nombre Apellido" en el combo.
         private class ItemCliente
         {
             public Cliente Cliente;
