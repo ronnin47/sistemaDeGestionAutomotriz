@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Models;
 using sistemaDeGestionAutomotriz.Services;
+using sistemaDeGestionAutomotriz.Forms;
 using sistemaDeGestionAutomotriz.UI;
 
 namespace sistemaDeGestionAutomotriz.UserControls
@@ -18,6 +19,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
         private Label _lblContador;
         private TextBox _txtBuscar;
         private ComboBox _cboCategoria;
+        private Button _btnNueva;
         private DataGridView _grilla;
         private Label _lblVacio;
 
@@ -77,8 +79,13 @@ namespace sistemaDeGestionAutomotriz.UserControls
             Tema.EstiloTituloPantalla(_lblTitulo);
             _lblContador = new Label { Location = new Point(2, 34) };
             Tema.EstiloSubtitulo(_lblContador);
+            _btnNueva = new Button { Text = "+  Nueva orden", Size = new Size(140, 36) };
+            Tema.EstiloBotonPrimario(_btnNueva);
+            _btnNueva.Click += (s, e) => NuevaOrden();
             header.Controls.Add(_lblTitulo);
             header.Controls.Add(_lblContador);
+            header.Controls.Add(_btnNueva);
+            header.Resize += (s, e) => { _btnNueva.Left = header.ClientSize.Width - _btnNueva.Width; };
 
             Controls.Add(_grilla);
             Controls.Add(_lblVacio);
@@ -148,6 +155,15 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 _lblContador.Text = total == 1 ? "1 orden" : total + " órdenes";
             else
                 _lblContador.Text = visibles + " de " + total + " órdenes";
+        }
+
+        private void NuevaOrden()
+        {
+            using (FormOrden form = new FormOrden())
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                    CargarOrdenes();
+            }
         }
     }
 }
