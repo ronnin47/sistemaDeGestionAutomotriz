@@ -32,7 +32,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
         {
             comboBoxUsuarios.DataSource = _usuarioService.ObtenerUsuarios();
             comboBoxUsuarios.DisplayMember = "NombreCompleto";
-            comboBoxUsuarios.ValueMember = "UsuarioId"; // ¡Faltaba esto para poder registrar la venta!
+            comboBoxUsuarios.ValueMember = "UsuarioId"; 
             comboBoxUsuarios.SelectedIndex = -1;
         }
 
@@ -42,11 +42,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             CargarUsuarios();
 
         }
-
-
-
-
-
 
 
 
@@ -61,7 +56,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             try
             {
 
-                //hacer clase modelo
+          
                 OrdenTrabajo nuevaOrden = new OrdenTrabajo
                 {
                     //cliente
@@ -94,7 +89,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
                     Estado = "Pendiente"
                 };
 
-                //OrdenTrabajoService service = new OrdenTrabajoService();
+             
                
 
                 bool exito = _ordenService.CrearNuevaOrden(nuevaOrden);

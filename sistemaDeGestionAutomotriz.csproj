@@ -169,7 +169,9 @@
     <Compile Include="Models\GarantiaDto.cs" />
     <Compile Include="Models\Insumo.cs" />
     <Compile Include="Models\OrdenTrabajo.cs" />
+    <Compile Include="Models\OrdenTrabajoCerrajeria.cs" />
     <Compile Include="Models\OrdenTrabajoDto.cs" />
+    <Compile Include="Models\OrdenTrabajoInstalacion.cs" />
     <Compile Include="Models\Session.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\Venta.cs" />
