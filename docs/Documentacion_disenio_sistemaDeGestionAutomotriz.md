@@ -47,7 +47,7 @@ Los estados se agrupan en cinco familias de color según su significado operativ
 | Familia | Color | Estados incluidos |
 |---|---|---|
 | En cola | Gris `#E1E5EA` / `#3A4450` | Ingresado |
-| En proceso (el laboratorio trabaja) | Azul `#E6F1FB` / `#0C447C` | En diagnóstico, En reparación |
+| En proceso (el laboratorio trabaja) | Azul `#C7DEF5` / `#0C447C` | En diagnóstico, En reparación |
 | Requiere acción | Ámbar `#FAEEDA` / `#854F0B` | Esperando aprobación, Aprobado |
 | Terminado | Verde `#E1F5EE` / `#0F6E56` | Reparado, Entregado |
 | Cerrado sin servicio | Rojo `#FCEBEB` / `#A32D2D` | Rechazado por cliente, Dado de baja |

@@ -30,7 +30,7 @@ namespace sistemaDeGestionAutomotriz.UI
         // Estados de una orden (mismo significado, mismo color)
         public static Color EnColaFondo => C("#E1E5EA", "#2C2C2A");          // Ingresado
         public static Color EnColaTexto => C("#3A4450", "#B4B2A9");
-        public static Color EnCursoFondo => C("#E6F1FB", "#103049");         // En diagnóstico / En reparación
+        public static Color EnCursoFondo => C("#C7DEF5", "#103049");         // En diagnóstico / En reparación
         public static Color EnCursoTexto => C("#0C447C", "#9CC9EC");
         public static Color RequiereAccionFondo => C("#FAEEDA", "#4A3A12");  // Esperando aprobación / Aprobado
         public static Color RequiereAccionTexto => C("#854F0B", "#F0C779");
