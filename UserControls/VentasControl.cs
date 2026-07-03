@@ -5,20 +5,19 @@ using System.Linq;
 using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Models;
 using sistemaDeGestionAutomotriz.Services;
+using sistemaDeGestionAutomotriz.Forms;
 using sistemaDeGestionAutomotriz.UI;
 
 namespace sistemaDeGestionAutomotriz.UserControls
 {
     public partial class VentasControl : UserControl
     {
-        // Puente con el backend.
         private readonly VentaService _service = new VentaService();
-        // Lista completa en memoria para filtrar sin volver a la base.
         private List<VentaInsumosDto> _ventas = new List<VentaInsumosDto>();
 
-        // Controles armados por código (mismas posiciones que en Clientes).
         private Label _lblTitulo;
         private Label _lblContador;
+        private Button _btnNueva;
         private TextBox _txtBuscar;
         private DataGridView _grilla;
         private Label _lblVacio;
@@ -30,13 +29,11 @@ namespace sistemaDeGestionAutomotriz.UserControls
             CargarVentas();
         }
 
-        /// <summary>Arma la pantalla por código con el mismo molde que las demás.</summary>
         private void ConstruirUI()
         {
             BackColor = Tema.FondoApp;
             Padding = new Padding(Tema.PaddingPantalla);
 
-            // ---- Cuerpo: la grilla (solo lectura por ahora; el back aún no registra ventas) ----
             _grilla = new DataGridView { Dock = DockStyle.Fill };
             Tema.EstiloTabla(_grilla);
             _grilla.AutoGenerateColumns = false;
@@ -47,7 +44,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.Columns.Add(Columna("Total", "Total", DataGridViewContentAlignment.MiddleRight, "C0"));
             _grilla.Columns.Add(Columna("Fecha", "Fecha", null, "dd/MM/yyyy"));
 
-            // ---- Estado vacío ----
             _lblVacio = new Label
             {
                 Dock = DockStyle.Fill,
@@ -58,7 +54,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 Visible = false
             };
 
-            // ---- Barra de herramientas: buscador (misma ubicación que en Clientes) ----
             Panel toolbar = new Panel { Dock = DockStyle.Top, Height = 50, BackColor = Tema.FondoApp };
             Label lblBuscar = new Label
             {
@@ -74,23 +69,25 @@ namespace sistemaDeGestionAutomotriz.UserControls
             toolbar.Controls.Add(lblBuscar);
             toolbar.Controls.Add(_txtBuscar);
 
-            // ---- Encabezado: título + contador (sin botón: el back todavía no registra ventas) ----
             Panel header = new Panel { Dock = DockStyle.Top, Height = 58, BackColor = Tema.FondoApp };
             _lblTitulo = new Label { Text = "Ventas de insumos", Location = new Point(0, 0) };
             Tema.EstiloTituloPantalla(_lblTitulo);
             _lblContador = new Label { Location = new Point(2, 34) };
             Tema.EstiloSubtitulo(_lblContador);
+            _btnNueva = new Button { Text = "+  Nueva venta", Size = new Size(140, 36) };
+            Tema.EstiloBotonPrimario(_btnNueva);
+            _btnNueva.Click += (s, e) => NuevaVenta();
             header.Controls.Add(_lblTitulo);
             header.Controls.Add(_lblContador);
+            header.Controls.Add(_btnNueva);
+            header.Resize += (s, e) => { _btnNueva.Left = header.ClientSize.Width - _btnNueva.Width; };
 
-            // Mismo orden de agregado que en Clientes: Fill primero, Top después.
             Controls.Add(_grilla);
             Controls.Add(_lblVacio);
             Controls.Add(toolbar);
             Controls.Add(header);
         }
 
-        /// <summary>Crea una columna mapeada a una propiedad, con alineación y formato opcionales.</summary>
         private DataGridViewTextBoxColumn Columna(string propiedad, string titulo,
             DataGridViewContentAlignment? alineacion = null, string formato = null)
         {
@@ -101,19 +98,16 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 SortMode = DataGridViewColumnSortMode.NotSortable
             };
             if (alineacion != null) col.DefaultCellStyle.Alignment = alineacion.Value;
-            if (formato != null) col.DefaultCellStyle.Format = formato;   // ej. "C0" (moneda) o fecha
+            if (formato != null) col.DefaultCellStyle.Format = formato;
             return col;
         }
 
-        /// <summary>Trae las ventas del backend y refresca la pantalla.</summary>
         private void CargarVentas()
         {
-            // Si falla, el servicio ya muestra su propio aviso y devuelve lista vacía.
             _ventas = _service.ObtenerVentaInsumos() ?? new List<VentaInsumosDto>();
             AplicarFiltro();
         }
 
-        /// <summary>Filtra por cliente o insumo y vuelca en la grilla.</summary>
         private void AplicarFiltro()
         {
             string q = (_txtBuscar.Text ?? "").Trim().ToLower();
@@ -134,7 +128,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             ActualizarContador(visibles.Count);
         }
 
-        /// <summary>Actualiza el subtítulo con la cantidad de ventas.</summary>
         private void ActualizarContador(int visibles)
         {
             int total = _ventas.Count;
@@ -142,6 +135,20 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 _lblContador.Text = total == 1 ? "1 venta registrada" : total + " ventas registradas";
             else
                 _lblContador.Text = visibles + " de " + total + " ventas";
+        }
+
+        private void NuevaVenta()
+        {
+            using (FormVenta form = new FormVenta())
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    // RegistrarNuevaVenta descuenta stock y devuelve true/false;
+                    // en éxito no muestra cartel, así que refrescamos en silencio.
+                    if (_service.RegistrarNuevaVenta(form.Venta))
+                        CargarVentas();
+                }
+            }
         }
     }
 }
