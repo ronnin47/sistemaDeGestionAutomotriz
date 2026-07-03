@@ -158,3 +158,15 @@ Aplica el molde común. Encabezado con título "Cotizaciones pendientes" y conta
 ## 16. Pantalla de Garantías
 
 Aplica el molde común. Encabezado con título "Garantías" y contador; buscador por cliente o técnico asignado; tabla con N° Orden, Cliente, Detalle, Asignado, Estado y Condición. La columna Estado se pinta con el color de su familia. Es de solo lectura.
+
+---
+
+## 17. Pantalla de Órdenes
+
+Aplica el molde común. Encabezado con título "Órdenes de trabajo", contador y botón "Nueva orden"; barra de herramientas con buscador y filtro por categoría (Todas / Módulo / Cerrajería / Instalación); tabla con N°, Categoría, Servicio, Cliente, Técnico, Ingreso, Estado (coloreado) y Precio.
+
+El alta (`FormOrden`) usa un **selector de grupo** con tres botones; según el grupo, cambian los campos:
+- **Módulo:** tipo de módulo, marca, modelo, tipo de vehículo, combustible.
+- **Cerrajería / Instalación:** tipo de servicio y marca.
+
+Además, en los tres grupos: cliente y técnico (elegidos de listas), y observaciones. La orden se crea en estado "Ingresado" mediante el método del grupo correspondiente (`CrearNuevaOrden` / `...Cerrajeria` / `...Instalacion`). El cliente se elige entre los existentes.
