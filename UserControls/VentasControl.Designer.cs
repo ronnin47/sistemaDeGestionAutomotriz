@@ -72,6 +72,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             this.dgvListaVentas.Name = "dgvListaVentas";
             this.dgvListaVentas.Size = new System.Drawing.Size(712, 220);
             this.dgvListaVentas.TabIndex = 0;
+            this.dgvListaVentas.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListaVentas_CellDoubleClick);
             // 
             // VentasControl
             // 

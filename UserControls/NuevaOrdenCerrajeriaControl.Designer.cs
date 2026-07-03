@@ -181,13 +181,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             // comboBoxTipoServicio
             // 
             this.comboBoxTipoServicio.FormattingEnabled = true;
-            this.comboBoxTipoServicio.Items.AddRange(new object[] {
-            "Copia de llave",
-            "LLave codificada",
-            "Programación de llave",
-            "Reparación de cerradura",
-            "Apertura de vehículo",
-            "Reparación de Telecomando"});
             this.comboBoxTipoServicio.Location = new System.Drawing.Point(50, 207);
             this.comboBoxTipoServicio.Name = "comboBoxTipoServicio";
             this.comboBoxTipoServicio.Size = new System.Drawing.Size(121, 21);

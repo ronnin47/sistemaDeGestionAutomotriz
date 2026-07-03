@@ -10,7 +10,6 @@ using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Services;
 using sistemaDeGestionAutomotriz.Models;
 using sistemaDeGestionAutomotriz.Forms;
-
 using System.Globalization;
 
 
@@ -39,32 +38,56 @@ namespace sistemaDeGestionAutomotriz.UserControls
         private void CargarOrdenes()
         {
             OrdenTrabajoService servicio = new OrdenTrabajoService();
+            // 1. Instanciamos tu servicio existente de insumos
+            InsumoService insumoServicio = new InsumoService();
+
 
             _ordenes = servicio.ObtenerOrdenesTrabajo();
 
             dgvOrdenesTrabajo.DataSource = _ordenes;
 
+            // 1. CONTADOR DE ACTIVAS: Excluimos de forma correcta "Entregado" y "Anulada"
             labelActivas.Text = _ordenes.Count(o =>
                 o.Estado != "Entregado" &&
-                o.Estado != "Dado de baja").ToString();
+                o.Estado != "Anulada").ToString();
 
+            // 2. CONTADORES DE CATEGORÍAS: Sumamos la condición para que SOLO cuente las que están activas (no entregadas ni anuladas)
             labelModulos.Text = _ordenes.Count(o =>
-                o.Categoria == "Módulo").ToString();
+                o.Categoria == "Módulo" &&
+                o.Estado != "Entregado" &&
+                o.Estado != "Anulada").ToString();
 
             labelCerrajeria.Text = _ordenes.Count(o =>
-                o.Categoria == "Cerrajería").ToString();
+                o.Categoria == "Cerrajería" &&
+                o.Estado != "Entregado" &&
+                o.Estado != "Anulada").ToString();
 
             labelInstalaciones.Text = _ordenes.Count(o =>
-                o.Categoria == "Instalaciones").ToString();
+                o.Categoria == "Instalaciones" &&
+                o.Estado != "Entregado" &&
+                o.Estado != "Anulada").ToString();
 
-            labelAlertaStock.Text = "0";
+            //labelAlertaStock.Text = "0";
+
+            // 2. LEEMOS TODOS LOS INSUMOS Y CONTAMOS LOS QUE TIENEN STOCK BAJO CON LINQ
+            List<Insumo> todosLosInsumos = insumoServicio.ObtenerTodosLosInsumos();
+            int alertas = todosLosInsumos.Count(i => i.Stock <= 5);
+            labelAlertaStock.Text = alertas.ToString();
+
 
             // Forma para renderizar lo que quiera ocultar columnas
-            dgvOrdenesTrabajo.Columns["Detalle"].Visible = false;
+            //dgvOrdenesTrabajo.Columns["Detalle"].Visible = false;
             dgvOrdenesTrabajo.Columns["Diagnostico"].Visible = false;
             dgvOrdenesTrabajo.Columns["Telefono"].Visible = false;
             dgvOrdenesTrabajo.Columns["Precio"].Visible = false;
             dgvOrdenesTrabajo.Columns["Garantia"].Visible = false;
+            dgvOrdenesTrabajo.Columns["IdUsuario"].Visible = false;
+            dgvOrdenesTrabajo.Columns["Dni"].Visible = false;
+            dgvOrdenesTrabajo.Columns["Vehiculo"].Visible = false;
+            dgvOrdenesTrabajo.Columns["TipoModulo"].Visible = false;
+            dgvOrdenesTrabajo.Columns["EsReparable"].Visible = false;
+            dgvOrdenesTrabajo.Columns["MotivoGarantia"].Visible = false;
+            dgvOrdenesTrabajo.Columns["Observaciones"].Visible = false;
         }
 
 
@@ -182,11 +205,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
 
 
-        //es el boton para traer la ventana del cargar nueva orden
-        //entonce al presionar el boton dispara el evento en donde crea la instancia de la ventana
-        //1- me construyo la ventana
-        //2- creo la instancia aca
-        //3 - la muestro 
+       
         private void buttonNuevaOrden_Click(object sender, EventArgs e)
         {
             FormNuevaOrden formNuevaOrden = new FormNuevaOrden();
@@ -199,8 +218,40 @@ namespace sistemaDeGestionAutomotriz.UserControls
             formNuevaOrden.Show();
         }
 
-      
 
+
+
+
+
+
+
+        private void dgvOrdenesTrabajo_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verificamos que el doble clic sea en una fila real y no en los títulos de arriba (los encabezados)
+            if (e.RowIndex >= 0)
+            {
+                // 1. Obtenemos la fila en la que el usuario hizo doble clic
+                DataGridViewRow filaSeleccionada = dgvOrdenesTrabajo.Rows[e.RowIndex];
+
+                // 2. Extraemos el ID del cliente (reemplaza "ClientId" o el índice por el nombre real de tu columna de ID)
+                // int clienteId = Convert.ToInt32(filaSeleccionada.Cells["ClienteId"].Value);
+
+                OrdenTrabajoDto orden = (OrdenTrabajoDto)filaSeleccionada.DataBoundItem;
+
+                FormEditarOrdenes formEditar = new FormEditarOrdenes(orden);
+
+
+
+                // 4. Cuando se cierre la ventana de edición, actualizamos la lista automáticamente
+                formEditar.FormClosed += (s, args) =>
+                {
+                    CargarOrdenes();
+                };
+
+                // 5. Lo mostramos como ventana emergente (ShowDialog bloquea la de atrás para evitar clics extra)
+                formEditar.ShowDialog();
+            }
+        }
 
 
 

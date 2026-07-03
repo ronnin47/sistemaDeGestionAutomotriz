@@ -11,6 +11,7 @@ using sistemaDeGestionAutomotriz.Services;
 using sistemaDeGestionAutomotriz.Models;
 
 
+
 namespace sistemaDeGestionAutomotriz.UserControls
 {
     public partial class NuevaOrdenCerrajeriaControl : UserControl
@@ -38,6 +39,14 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
         private void NuevaOrdenCerrajeriaControl_Load(object sender, EventArgs e)
         {
+            //cargar el combo
+            comboBoxTipoServicio.Items.Clear();
+            comboBoxTipoServicio.Items.Add("Copia de llave");
+            comboBoxTipoServicio.Items.Add("Llave codificada");
+            comboBoxTipoServicio.Items.Add("Programación de llaves");
+            comboBoxTipoServicio.Items.Add("Reparación de cerradura");
+            comboBoxTipoServicio.Items.Add("Apertura de vehículos");
+            comboBoxTipoServicio.Items.Add("Reparación de Telecomando");
 
             CargarUsuarios();
 
@@ -57,6 +66,40 @@ namespace sistemaDeGestionAutomotriz.UserControls
             {
 
 
+                int tipoServicio = 0;
+
+                switch (comboBoxTipoServicio.Text)
+                {
+
+                    case "Llave codificada":
+                        tipoServicio = 7;
+                        break;
+                    case "Copia de llave":
+                        tipoServicio = 8;
+                        break;
+
+                    case "Programación de llaves":
+                        tipoServicio = 9;
+                        break;
+                    case "Apertura de vehículos":
+                        tipoServicio = 10;
+                        break;
+
+                    case "Reparación de cerradura":
+                        tipoServicio = 16;
+                        break;
+
+                  
+
+                    case "Reparación de Telecomando":
+                        tipoServicio = 17;
+                        break;
+
+                    default:
+                        MessageBox.Show("Seleccione un tipo de servicio.");
+                        return;
+                }
+
                 OrdenTrabajoCerrajeria nuevaOrden = new OrdenTrabajoCerrajeria
                 {
                     //cliente
@@ -68,9 +111,11 @@ namespace sistemaDeGestionAutomotriz.UserControls
                     Direccion = textBoxDireccion.Text.Trim(),//ok 
 
 
-                    //detalle
-                    TipoServicio = comboBoxTipoServicio.Text,//ok
-                    Marca =textBoxModeloVehiculo.Text,//ok
+                    TipoServicio = comboBoxTipoServicio.Text,// esto tiene un texto y yo necesito su valor
+                    TipoServicioId = tipoServicio,
+                
+                
+                    Marca = textBoxModeloVehiculo.Text,//ok
                  
 
                     IdUsuarioAsignado = (int)comboBoxUsuarios.SelectedValue,//ok

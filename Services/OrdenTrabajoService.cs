@@ -14,6 +14,8 @@ namespace sistemaDeGestionAutomotriz.Services
     public class OrdenTrabajoService
     {
 
+
+        //get 
         public List<OrdenTrabajoDto> ObtenerOrdenesTrabajo()
         {
             List<OrdenTrabajoDto> listaOrdenesTrabajo = new List<OrdenTrabajoDto>();
@@ -27,6 +29,7 @@ namespace sistemaDeGestionAutomotriz.Services
                                 
                      string sql = @"SELECT
                                     o.id_orden,
+                                    o.id_usuario, 
                                     ts.categoria,
                                     ts.nombre AS tipo_servicio,
                                     CONCAT(c.apellido, ', ', c.nombre) AS cliente,
@@ -68,9 +71,10 @@ namespace sistemaDeGestionAutomotriz.Services
                         OrdenTrabajoDto orden = new OrdenTrabajoDto
                         {
                             NumeroOrden = Convert.ToInt32(reader["id_orden"]),
+                            IdUsuario = Convert.ToInt32(reader["id_usuario"]),
                             Categoria = reader["categoria"].ToString(),
-                            TipoServicio = reader["tipo_servicio"].ToString(),
                             Cliente = reader["cliente"].ToString(),
+                            TipoServicio = reader["tipo_servicio"].ToString(),
                             Dni = reader["dni"].ToString(),
                             Telefono = reader["telefono"].ToString(),
                             Vehiculo = reader["vehiculo"].ToString(),
@@ -109,14 +113,11 @@ namespace sistemaDeGestionAutomotriz.Services
 
 
 
-        //inser de nueva orden
-        //CraarNuevaOrden  INSERT
-        //tiene que conseguir primero el id_cliente y si no existe tienen que insertar el cliente y depsues 
-        //insertar la orden
+      
 
 
 
-
+        //insert nueva orden Modulo
         public bool CrearNuevaOrden(OrdenTrabajo orden)
         {
             using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
@@ -234,7 +235,7 @@ namespace sistemaDeGestionAutomotriz.Services
                     //cliente
                     comando.Parameters.AddWithValue("@id_cliente", idCliente);
                     comando.Parameters.AddWithValue("@id_usuario", orden.IdUsuarioAsignado);
-                    comando.Parameters.AddWithValue("@id_tipo", 1);
+                    comando.Parameters.AddWithValue("@id_tipo", orden.TipoModuloId);
                     comando.Parameters.AddWithValue("@tipo_modulo", orden.TipoModulo);
 
 
@@ -245,7 +246,7 @@ namespace sistemaDeGestionAutomotriz.Services
                     comando.Parameters.AddWithValue("@vehiculo", orden.TipoVehiculo);
 
 
-                    MessageBox.Show($" lo que tiene marca {orden.Marca}");
+                    //MessageBox.Show($" lo que tiene marca {orden.Marca}");
                     comando.Parameters.AddWithValue("@vehiculo", orden.Marca);
 
 
@@ -271,12 +272,7 @@ namespace sistemaDeGestionAutomotriz.Services
             }
         }
 
-
-
-
-
-
-
+        //insert nueva orden cerrajeria
         public bool CrearNuevaOrdenCerrajeria(OrdenTrabajoCerrajeria orden)
         {
             using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
@@ -393,8 +389,8 @@ namespace sistemaDeGestionAutomotriz.Services
                     //cliente
                     comando.Parameters.AddWithValue("@id_cliente", idCliente);
                     comando.Parameters.AddWithValue("@id_usuario", orden.IdUsuarioAsignado);
-                    comando.Parameters.AddWithValue("@id_tipo", 2);
-
+                    comando.Parameters.AddWithValue("@id_tipo", orden.TipoServicioId);//aca tiene que entrar en uno de los tres casos de jerarquia
+                                                                                    //segun el id tipo
 
                     comando.Parameters.AddWithValue("@tipo_modulo", orden.TipoServicio);
 
@@ -426,7 +422,7 @@ namespace sistemaDeGestionAutomotriz.Services
             }
         }
 
-
+        //insert nueva orden Instalacion
         public bool CrearNuevaOrdenInstalacion(OrdenTrabajoInstalacion orden)
         {
             using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
@@ -543,7 +539,7 @@ namespace sistemaDeGestionAutomotriz.Services
                     //cliente
                     comando.Parameters.AddWithValue("@id_cliente", idCliente);
                     comando.Parameters.AddWithValue("@id_usuario", orden.IdUsuarioAsignado);
-                    comando.Parameters.AddWithValue("@id_tipo", 3);
+                    comando.Parameters.AddWithValue("@id_tipo", orden.TipoServicioId);
 
 
                     comando.Parameters.AddWithValue("@tipo_modulo", orden.TipoServicio);
@@ -571,6 +567,146 @@ namespace sistemaDeGestionAutomotriz.Services
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error al crear la orden: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+
+
+
+
+
+        //anular una orden
+        public bool AnularOrden(int idOrden)
+        {
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    // Usamos una transacción para resguardar que se anule la venta y se devuelva el stock juntos
+                    using (NpgsqlTransaction transaccion = conexion.BeginTransaction())
+                    {
+                        try
+                        {
+                            // PASO 1: Cambiar el estado de la venta a 'Anulada'
+                            string sqlOrden = @"UPDATE ordenes_trabajo 
+                                        SET estado = 'Anulada' 
+                                        WHERE id_orden = @idOrden;";
+
+                            using (NpgsqlCommand cmdOrden = new NpgsqlCommand(sqlOrden, conexion, transaccion))
+                            {
+                                cmdOrden.Parameters.AddWithValue("@idOrden", idOrden);
+                                cmdOrden.ExecuteNonQuery();
+                            }
+                            /*
+                            // PASO 2: Devolver el stock sumando la cantidad en kits_insumos (usando tus nombres de campos exactos)
+                            string sqlStock = @"UPDATE kits_insumos 
+                                        SET stock = stock + @cantidad 
+                                        WHERE id_kit = @idKit;";
+
+                            using (NpgsqlCommand cmdStock = new NpgsqlCommand(sqlStock, conexion, transaccion))
+                            {
+                                cmdStock.Parameters.AddWithValue("@cantidad", cantidadAReponer);
+                                cmdStock.Parameters.AddWithValue("@idKit", idKit);
+                                cmdStock.ExecuteNonQuery();
+                            }
+                            */
+                            // Confirmamos la operación en PostgreSQL
+                            transaccion.Commit();
+
+                            MessageBox.Show("La órden ha sido anulada correctamente.",
+                                            "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return true;
+                        }
+                        catch (Exception exInner)
+                        {
+                            // Deshacemos todo si algo falla para no romper los números del negocio
+                            transaccion.Rollback();
+                            throw new Exception("Error en los comandos de anulación: " + exInner.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error de conexión al procesar la baja: " + ex.Message,
+                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+        }
+
+        public bool ActualizarOrden(OrdenTrabajoDto orden)
+        {
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    // Usamos una transacción para asegurar que se actualice la orden y el teléfono juntos
+                    using (NpgsqlTransaction transaccion = conexion.BeginTransaction())
+                    {
+                        try
+                        {
+                            // PASO 1: Actualizar los campos operativos en la tabla ordenes_trabajo (ID DIRECTO)
+                            string sqlOrden = @"UPDATE ordenes_trabajo 
+                                        SET id_usuario = @id_usuario,
+                                            diagnostico = @diagnostico,
+                                            es_reparable = @es_reparable,
+                                            estado = @estado,
+                                            precio = @precio,
+                                            garantia = @garantia,
+                                            motivo_garantia = @motivo_garantia,
+                                            observaciones = @observaciones
+                                        WHERE id_orden = @id_orden;";
+
+                            using (NpgsqlCommand comando = new NpgsqlCommand(sqlOrden, conexion, transaccion))
+                            {
+                                // Le pasamos directamente el IdUsuario numérico que viaja de forma segura
+                                comando.Parameters.AddWithValue("@id_usuario", orden.IdUsuario);
+                                comando.Parameters.AddWithValue("@diagnostico", orden.Diagnostico);
+                                comando.Parameters.AddWithValue("@es_reparable", orden.EsReparable);
+                                comando.Parameters.AddWithValue("@estado", orden.Estado);
+                                comando.Parameters.AddWithValue("@precio", orden.Precio);
+                                comando.Parameters.AddWithValue("@garantia", orden.Garantia);
+                                comando.Parameters.AddWithValue("@motivo_garantia", orden.MotivoGarantia);
+                                comando.Parameters.AddWithValue("@observaciones", orden.Observaciones);
+                                comando.Parameters.AddWithValue("@id_orden", orden.NumeroOrden);
+
+                                comando.ExecuteNonQuery();
+                            }
+
+                            // PASO 2: Actualizar el campo telefono en la tabla clientes usando el id_cliente de esta orden
+                            string sqlTelefono = @"UPDATE clientes 
+                                          SET telefono = @telefono 
+                                          WHERE id_cliente = (SELECT id_cliente FROM ordenes_trabajo WHERE id_orden = @id_orden);";
+
+                            using (NpgsqlCommand cmdTel = new NpgsqlCommand(sqlTelefono, conexion, transaccion))
+                            {
+                                cmdTel.Parameters.AddWithValue("@telefono", orden.Telefono);
+                                cmdTel.Parameters.AddWithValue("@id_orden", orden.NumeroOrden);
+
+                                cmdTel.ExecuteNonQuery();
+                            }
+
+                            // Confirmamos de forma definitiva todos los cambios en Supabase
+                            transaccion.Commit();
+                            return true;
+                        }
+                        catch (Exception exInner)
+                        {
+                            // Si algo falla dentro del proceso, revertimos todo para no corromper la información
+                            transaccion.Rollback();
+                            throw new Exception("Error en la ejecución de los comandos de actualización: " + exInner.Message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al actualizar la orden de trabajo: " + ex.Message, "Error de Guardado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
             }

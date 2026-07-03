@@ -22,7 +22,10 @@ namespace sistemaDeGestionAutomotriz.Forms
 
 
 
-
+        private void FormNuevaOrden_Load(object sender, EventArgs e)
+        {
+            MostrarPantallaControl(new NuevaOrdenModuloControl());
+        }
 
 
 
@@ -64,5 +67,7 @@ namespace sistemaDeGestionAutomotriz.Forms
 
             MostrarPantallaControl(pantallaInstalacion);
         }
+
+       
     }
 }

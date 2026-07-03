@@ -236,6 +236,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             this.dgvOrdenesTrabajo.Size = new System.Drawing.Size(780, 194);
             this.dgvOrdenesTrabajo.TabIndex = 0;
             this.dgvOrdenesTrabajo.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrdenesTrabajo_CellClick);
+            this.dgvOrdenesTrabajo.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvOrdenesTrabajo_CellDoubleClick);
             // 
             // panel2
             // 

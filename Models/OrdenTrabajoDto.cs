@@ -10,11 +10,12 @@ namespace sistemaDeGestionAutomotriz.Models
     {
         public int NumeroOrden { get; set; }
 
+       
+
         public string Categoria { get; set; } = string.Empty;
 
-        public string TipoServicio { get; set; } = string.Empty;
-
         public string Cliente { get; set; } = string.Empty;
+        public string TipoServicio { get; set; } = string.Empty;
 
         public string Dni { get; set; } = string.Empty;
 
@@ -31,6 +32,9 @@ namespace sistemaDeGestionAutomotriz.Models
         public bool EsReparable { get; set; }
 
         public string TecnicoAsignado { get; set; } = string.Empty;
+
+
+        public int IdUsuario { get; set; }
 
         public DateTime FechaIngreso { get; set; }
 

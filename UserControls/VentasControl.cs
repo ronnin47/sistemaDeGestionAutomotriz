@@ -47,6 +47,11 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 dgvListaVentas.AutoGenerateColumns = true;
                 dgvListaVentas.DataSource = null;
                 dgvListaVentas.DataSource = ventaService.ObtenerVentaInsumos();
+
+                // Forma para renderizar lo que quiera ocultar columnas
+                dgvListaVentas.Columns["idCliente"].Visible = false;
+                dgvListaVentas.Columns["idKit"].Visible = false;
+              
             }
             catch (Exception ex)
             {
@@ -76,8 +81,38 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
 
 
+        
+        // EVENTO DE DOBLE CLIC EN UNA CELDA DE LA TABLA
+        private void dgvListaVentas_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Verificamos que el doble clic sea en una fila real y no en los títulos de arriba (los encabezados)
+            if (e.RowIndex >= 0)
+            {
+                // 1. Obtenemos la fila en la que el usuario hizo doble clic
+                DataGridViewRow filaSeleccionada = dgvListaVentas.Rows[e.RowIndex];
+
+                // 2. PODEMOS CONSEGUIR EL ID DE LA VENTA
+                // int clienteId = Convert.ToInt32(filaSeleccionada.Cells["ClienteId"].Value);
 
 
+                VentaInsumosDto venta = (VentaInsumosDto)filaSeleccionada.DataBoundItem;
+
+                FormEditarVenta formEditar = new FormEditarVenta(venta);
+
+
+
+                // 4. Cuando se cierre la ventana de edición, actualizamos la lista automáticamente
+                formEditar.FormClosed += (s, args) =>
+                {
+                    CargarVentas();
+                };
+
+                // 5. Lo mostramos como ventana emergente (ShowDialog bloquea la de atrás para evitar clics extra)
+                formEditar.ShowDialog();
+            }
+        }
+
+       
 
     }
 }

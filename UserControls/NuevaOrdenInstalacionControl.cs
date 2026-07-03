@@ -38,6 +38,15 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
         private void NuevaOrdenInstalacionControl_Load(object sender, EventArgs e)
         {
+            //cargar el combo
+            comboBoxTipoServicio.Items.Clear();
+            
+            comboBoxTipoServicio.Items.Add("Instalación de Alarmas");
+            comboBoxTipoServicio.Items.Add("Instalación de Estereos");
+            comboBoxTipoServicio.Items.Add("Reparación de cerradura");
+            comboBoxTipoServicio.Items.Add("Instalación de Cámaras de reserva");
+            comboBoxTipoServicio.Items.Add("Instalación de Sensores de Estacionamiento");
+            comboBoxTipoServicio.Items.Add("Instalación de Luces LED");
 
             CargarUsuarios();
 
@@ -55,7 +64,37 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
             try
             {
+                int tipoServicio = 0;
 
+                switch (comboBoxTipoServicio.Text)
+                {
+                    
+
+                    case "Instalación de Alarmas":
+                        tipoServicio = 11;
+                        break;
+
+                    case "Instalación de Estereos":
+                        tipoServicio = 12;
+                        break;
+
+                    case "Instalación de Cámaras de reserva":
+                        tipoServicio = 13;
+                        break;
+             
+
+                    case "Instalación de Sensores de Estacionamiento":
+                        tipoServicio = 14;
+                        break;
+
+                    case "Instalación de Luces LED":
+                        tipoServicio = 15;
+                        break;
+
+                    default:
+                        MessageBox.Show("Seleccione un tipo de servicio.");
+                        return;
+                }
 
                 OrdenTrabajoInstalacion nuevaOrden = new OrdenTrabajoInstalacion
                 {
@@ -70,6 +109,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
                     //detalle
                     TipoServicio = comboBoxTipoServicio.Text,//ok
+                    TipoServicioId = tipoServicio,// aca guardamos el id del combo
                     Marca = textBoxModeloVehiculo.Text,//ok
 
 

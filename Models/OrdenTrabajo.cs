@@ -31,6 +31,7 @@ namespace sistemaDeGestionAutomotriz.Models
         
         
         public string TipoModulo { get; set; }
+        public int TipoModuloId { get; set; }// guardamos el id del tipo de Modulo
 
         public string Modelo { get; set; }
         public string Marca { get; set; }

@@ -41,7 +41,7 @@ namespace sistemaDeGestionAutomotriz
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-
+            MostrarPantallaControl(new OrdenesControl());
         }
 
 
