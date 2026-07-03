@@ -116,25 +116,25 @@ namespace sistemaDeGestionAutomotriz.Forms
             _cboCliente.ValueMember = "Id";
             _cboCliente.DataSource = itemsCliente;
 
-            // Insumos: el objeto Insumo directo (tiene Nombre, IdKit, Precio, Stock).
+            // Insumos: los envolvemos para mostrar el stock al lado del nombre.
             var insumos = new InsumoService().ObtenerTodosLosInsumos() ?? new List<Insumo>();
-            _cboInsumo.DisplayMember = "Nombre";
-            _cboInsumo.ValueMember = "IdKit";
-            _cboInsumo.DataSource = insumos;
+            var itemsInsumo = new List<ItemInsumo>();
+            foreach (Insumo i in insumos) itemsInsumo.Add(new ItemInsumo { Insumo = i });
+            _cboInsumo.DataSource = itemsInsumo;
 
             ActualizarTotal();
         }
 
         private void ActualizarTotal()
         {
-            Insumo ins = _cboInsumo.SelectedItem as Insumo;
+            Insumo ins = InsumoSeleccionado();
             decimal total = ins != null ? ins.Precio * _numCantidad.Value : 0;
             _lblTotalValor.Text = total.ToString("C0");
         }
 
         private void Guardar()
         {
-            Insumo ins = _cboInsumo.SelectedItem as Insumo;
+            Insumo ins = InsumoSeleccionado();
             if (_cboCliente.SelectedValue == null || ins == null)
             {
                 Avisos.Error("Elegí un cliente y un insumo.");
@@ -158,6 +158,22 @@ namespace sistemaDeGestionAutomotriz.Forms
 
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private Insumo InsumoSeleccionado()
+        {
+            ItemInsumo item = _cboInsumo.SelectedItem as ItemInsumo;
+            return item != null ? item.Insumo : null;
+        }
+
+        // Envuelve un insumo para mostrar "Nombre (stock: N)" en el combo.
+        private class ItemInsumo
+        {
+            public Insumo Insumo;
+            public override string ToString()
+            {
+                return Insumo.Nombre + "  (stock: " + Insumo.Stock + ")";
+            }
         }
     }
 }
