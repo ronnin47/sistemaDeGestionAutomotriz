@@ -21,6 +21,12 @@ namespace sistemaDeGestionAutomotriz.Models
 
         public string Rol { get; set; }
 
+
+        public string NombreCompleto
+        {
+            get { return Nombre + " " + Apellido; }
+        }
+
     }
 
 }

@@ -101,6 +101,482 @@ namespace sistemaDeGestionAutomotriz.Services
             }
         }
 
+
+
+
+
+
+
+
+
+        //inser de nueva orden
+        //CraarNuevaOrden  INSERT
+        //tiene que conseguir primero el id_cliente y si no existe tienen que insertar el cliente y depsues 
+        //insertar la orden
+
+
+
+
+        public bool CrearNuevaOrden(OrdenTrabajo orden)
+        {
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    int idCliente;
+
+                    // Buscar cliente por DNI
+                    string sqlBuscar = @"SELECT id_cliente
+                                 FROM clientes
+                                 WHERE dni = @dni;";
+
+                    NpgsqlCommand cmdBuscar = new NpgsqlCommand(sqlBuscar, conexion);
+                    cmdBuscar.Parameters.AddWithValue("@dni", orden.Dni);
+
+                    object resultado = cmdBuscar.ExecuteScalar();
+
+                    if (resultado != null)
+                    {
+                        idCliente = Convert.ToInt32(resultado);
+                    }
+                    else
+                    {
+                        // Insertar cliente
+                        string sqlCliente = @"INSERT INTO clientes
+                                    (
+                                        nombre,
+                                        apellido,
+                                        dni,
+                                        telefono,
+                                        email,
+                                        direccion,
+                                        activo
+                                    )
+                                    VALUES
+                                    (
+                                        @nombre,
+                                        @apellido,
+                                        @dni,
+                                        @telefono,
+                                        @email,
+                                        @direccion,
+                                        TRUE
+                                    )
+                                    RETURNING id_cliente;";
+
+                        NpgsqlCommand cmdCliente = new NpgsqlCommand(sqlCliente, conexion);
+
+                        cmdCliente.Parameters.AddWithValue("@nombre", orden.NombreCliente);
+                        cmdCliente.Parameters.AddWithValue("@apellido", orden.ApellidoCliente);
+                        cmdCliente.Parameters.AddWithValue("@dni", orden.Dni);
+                        cmdCliente.Parameters.AddWithValue("@telefono", orden.Telefono);
+                        cmdCliente.Parameters.AddWithValue("@email", orden.Email);
+                        cmdCliente.Parameters.AddWithValue("@direccion", orden.Direccion);
+
+                        idCliente = Convert.ToInt32(cmdCliente.ExecuteScalar());
+                    }
+
+                    // Insertar orden
+                    string sqlOrden = @"INSERT INTO ordenes_trabajo
+                                (
+                                    id_cliente,
+                                    id_usuario,
+                                    id_tipo,
+
+
+
+                                    tipo_modulo,
+                                    modelo,
+                                    tipo_vehiculo,
+                                    combustible,
+                                    
+                                    vehiculo,
+
+
+                                    detalle,
+                                    diagnostico,
+                                    
+                                    observaciones,
+                                    estado,
+                                    fecha,
+                                    garantia
+                                )
+                                VALUES
+                                (
+                                    @id_cliente,
+                                    @id_usuario,
+                                    @id_tipo,
+
+                                    @tipo_modulo,
+                                    @modelo,
+                                    @tipo_vehiculo,
+                                    @combustible,
+
+                                    @vehiculo,
+
+
+                                    @detalle,
+                                    @diagnostico,
+
+
+                                    @observaciones,
+                                    'Pendiente',
+                                    CURRENT_DATE,
+                                    @garantia
+                                    
+                                );";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sqlOrden, conexion);
+
+
+                    //cliente
+                    comando.Parameters.AddWithValue("@id_cliente", idCliente);
+                    comando.Parameters.AddWithValue("@id_usuario", orden.IdUsuarioAsignado);
+                    comando.Parameters.AddWithValue("@id_tipo", 1);
+                    comando.Parameters.AddWithValue("@tipo_modulo", orden.TipoModulo);
+
+
+                    //detalle
+                    comando.Parameters.AddWithValue("@modelo", orden.Modelo);
+                    comando.Parameters.AddWithValue("@tipo_vehiculo", orden.TipoVehiculo);
+                    comando.Parameters.AddWithValue("@combustible", orden.Combustible);
+                    comando.Parameters.AddWithValue("@vehiculo", orden.TipoVehiculo);
+
+
+                    MessageBox.Show($" lo que tiene marca {orden.Marca}");
+                    comando.Parameters.AddWithValue("@vehiculo", orden.Marca);
+
+
+                    string detalle = $"Modelo: {orden.Modelo} | Vehículo: {orden.TipoVehiculo} | Combustible: {orden.Combustible} | Tipo: {orden.Marca}";
+                    comando.Parameters.AddWithValue("@detalle", detalle);
+
+
+                   comando.Parameters.AddWithValue("@diagnostico", "Sin diagnostico");
+
+
+                    comando.Parameters.AddWithValue("@observaciones", orden.Observaciones);
+                    comando.Parameters.AddWithValue("@garantia", orden.Garantia);
+
+                    int filasAfectadas = comando.ExecuteNonQuery();
+
+                    return filasAfectadas > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al crear la orden: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+
+
+
+
+
+
+        public bool CrearNuevaOrdenCerrajeria(OrdenTrabajoCerrajeria orden)
+        {
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    int idCliente;
+
+                    // Buscar cliente por DNI
+                    string sqlBuscar = @"SELECT id_cliente
+                                 FROM clientes
+                                 WHERE dni = @dni;";
+
+                    NpgsqlCommand cmdBuscar = new NpgsqlCommand(sqlBuscar, conexion);
+                    cmdBuscar.Parameters.AddWithValue("@dni", orden.Dni);
+
+                    object resultado = cmdBuscar.ExecuteScalar();
+
+                    if (resultado != null)
+                    {
+                        idCliente = Convert.ToInt32(resultado);
+                    }
+                    else
+                    {
+                        // Insertar cliente
+                        string sqlCliente = @"INSERT INTO clientes
+                                    (
+                                        nombre,
+                                        apellido,
+                                        dni,
+                                        telefono,
+                                        email,
+                                        direccion,
+                                        activo
+                                    )
+                                    VALUES
+                                    (
+                                        @nombre,
+                                        @apellido,
+                                        @dni,
+                                        @telefono,
+                                        @email,
+                                        @direccion,
+                                        TRUE
+                                    )
+                                    RETURNING id_cliente;";
+
+                        NpgsqlCommand cmdCliente = new NpgsqlCommand(sqlCliente, conexion);
+
+                        cmdCliente.Parameters.AddWithValue("@nombre", orden.NombreCliente);
+                        cmdCliente.Parameters.AddWithValue("@apellido", orden.ApellidoCliente);
+                        cmdCliente.Parameters.AddWithValue("@dni", orden.Dni);
+                        cmdCliente.Parameters.AddWithValue("@telefono", orden.Telefono);
+                        cmdCliente.Parameters.AddWithValue("@email", orden.Email);
+                        cmdCliente.Parameters.AddWithValue("@direccion", orden.Direccion);
+
+                        idCliente = Convert.ToInt32(cmdCliente.ExecuteScalar());
+                    }
+
+                    // Insertar orden
+                    string sqlOrden = @"INSERT INTO ordenes_trabajo
+                                (
+                                    id_cliente,
+                                    id_usuario,
+                                    id_tipo,
+
+
+
+                                    tipo_modulo, 
+                           
+                                  
+                                  
+                                    
+                                    vehiculo,
+
+
+                                    detalle,
+                                    diagnostico,
+                                    
+                                    observaciones,
+                                    estado,
+                                    fecha,
+                                    garantia
+                                )
+                                VALUES
+                                (
+                                    @id_cliente,
+                                    @id_usuario,
+                                    @id_tipo,
+                                    @tipo_modulo,
+                            
+
+
+                               
+                                    @vehiculo,
+
+
+                                    @detalle,
+                                    @diagnostico,
+
+
+                                    @observaciones,
+                                    'Pendiente',
+                                    CURRENT_DATE,
+                                    @garantia
+                                    
+                                );";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sqlOrden, conexion);
+
+
+                    //cliente
+                    comando.Parameters.AddWithValue("@id_cliente", idCliente);
+                    comando.Parameters.AddWithValue("@id_usuario", orden.IdUsuarioAsignado);
+                    comando.Parameters.AddWithValue("@id_tipo", 2);
+
+
+                    comando.Parameters.AddWithValue("@tipo_modulo", orden.TipoServicio);
+
+                  
+
+             
+                    comando.Parameters.AddWithValue("@vehiculo", orden.Marca);
+
+                    //detalle
+                    string detalle = $"Servicio: { orden.TipoServicio} | Tipo: {orden.Marca}";
+                    comando.Parameters.AddWithValue("@detalle", detalle);
+
+
+                    comando.Parameters.AddWithValue("@diagnostico", "Sin diagnostico");
+
+
+                    comando.Parameters.AddWithValue("@observaciones", orden.Observaciones);
+                    comando.Parameters.AddWithValue("@garantia", orden.Garantia);
+
+                    int filasAfectadas = comando.ExecuteNonQuery();
+
+                    return filasAfectadas > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al crear la orden: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+
+        public bool CrearNuevaOrdenInstalacion(OrdenTrabajoInstalacion orden)
+        {
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
+
+                    int idCliente;
+
+                    // Buscar cliente por DNI
+                    string sqlBuscar = @"SELECT id_cliente
+                                 FROM clientes
+                                 WHERE dni = @dni;";
+
+                    NpgsqlCommand cmdBuscar = new NpgsqlCommand(sqlBuscar, conexion);
+                    cmdBuscar.Parameters.AddWithValue("@dni", orden.Dni);
+
+                    object resultado = cmdBuscar.ExecuteScalar();
+
+                    if (resultado != null)
+                    {
+                        idCliente = Convert.ToInt32(resultado);
+                    }
+                    else
+                    {
+                        // Insertar cliente
+                        string sqlCliente = @"INSERT INTO clientes
+                                    (
+                                        nombre,
+                                        apellido,
+                                        dni,
+                                        telefono,
+                                        email,
+                                        direccion,
+                                        activo
+                                    )
+                                    VALUES
+                                    (
+                                        @nombre,
+                                        @apellido,
+                                        @dni,
+                                        @telefono,
+                                        @email,
+                                        @direccion,
+                                        TRUE
+                                    )
+                                    RETURNING id_cliente;";
+
+                        NpgsqlCommand cmdCliente = new NpgsqlCommand(sqlCliente, conexion);
+
+                        cmdCliente.Parameters.AddWithValue("@nombre", orden.NombreCliente);
+                        cmdCliente.Parameters.AddWithValue("@apellido", orden.ApellidoCliente);
+                        cmdCliente.Parameters.AddWithValue("@dni", orden.Dni);
+                        cmdCliente.Parameters.AddWithValue("@telefono", orden.Telefono);
+                        cmdCliente.Parameters.AddWithValue("@email", orden.Email);
+                        cmdCliente.Parameters.AddWithValue("@direccion", orden.Direccion);
+
+                        idCliente = Convert.ToInt32(cmdCliente.ExecuteScalar());
+                    }
+
+                    // Insertar orden
+                    string sqlOrden = @"INSERT INTO ordenes_trabajo
+                                (
+                                    id_cliente,
+                                    id_usuario,
+                                    id_tipo,
+
+
+
+                                    tipo_modulo, 
+                           
+                                  
+                                  
+                                    
+                                    vehiculo,
+
+
+                                    detalle,
+                                    diagnostico,
+                                    
+                                    observaciones,
+                                    estado,
+                                    fecha,
+                                    garantia
+                                )
+                                VALUES
+                                (
+                                    @id_cliente,
+                                    @id_usuario,
+                                    @id_tipo,
+                                    @tipo_modulo,
+                            
+
+
+                               
+                                    @vehiculo,
+
+
+                                    @detalle,
+                                    @diagnostico,
+
+
+                                    @observaciones,
+                                    'Pendiente',
+                                    CURRENT_DATE,
+                                    @garantia
+                                    
+                                );";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sqlOrden, conexion);
+
+
+                    //cliente
+                    comando.Parameters.AddWithValue("@id_cliente", idCliente);
+                    comando.Parameters.AddWithValue("@id_usuario", orden.IdUsuarioAsignado);
+                    comando.Parameters.AddWithValue("@id_tipo", 3);
+
+
+                    comando.Parameters.AddWithValue("@tipo_modulo", orden.TipoServicio);
+
+
+
+
+                    comando.Parameters.AddWithValue("@vehiculo", orden.Marca);
+
+                    //detalle
+                    string detalle = $"Servicio: { orden.TipoServicio} | Tipo: {orden.Marca}";
+                    comando.Parameters.AddWithValue("@detalle", detalle);
+
+
+                    comando.Parameters.AddWithValue("@diagnostico", "Sin diagnostico");
+
+
+                    comando.Parameters.AddWithValue("@observaciones", orden.Observaciones);
+                    comando.Parameters.AddWithValue("@garantia", orden.Garantia);
+
+                    int filasAfectadas = comando.ExecuteNonQuery();
+
+                    return filasAfectadas > 0;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al crear la orden: " + ex.Message);
+                    return false;
+                }
+            }
+        }
+
+
     }
 
 

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace sistemaDeGestionAutomotriz.Models
 {
-    public class VentaInsumosDto
+    public class Venta
     {
-        public int NumeroVenta { get; set; } // este es el id
-        public string Cliente { get; set; } = string.Empty;
-        public string Insumo { get; set; } = string.Empty;
+        public int IdVenta { get; set; }
+        public int IdCliente { get; set; }
+        public int IdKit { get; set; }
         public int Cantidad { get; set; }
         public decimal Total { get; set; }
         public DateTime Fecha { get; set; }

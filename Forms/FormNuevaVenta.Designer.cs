@@ -126,6 +126,7 @@ namespace sistemaDeGestionAutomotriz.Forms
             this.buttonRegistarVenta.TabIndex = 9;
             this.buttonRegistarVenta.Text = "Registrar Venta";
             this.buttonRegistarVenta.UseVisualStyleBackColor = true;
+            this.buttonRegistarVenta.Click += new System.EventHandler(this.buttonRegistarVenta_Click);
             // 
             // FormNuevaVenta
             // 

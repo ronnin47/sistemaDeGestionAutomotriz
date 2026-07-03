@@ -29,30 +29,56 @@ namespace sistemaDeGestionAutomotriz.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelG = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.dgvListaGarantias = new System.Windows.Forms.DataGridView();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListaGarantias)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // labelG
             // 
-            this.label1.Location = new System.Drawing.Point(330, 230);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(100, 23);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Pantalla Garantias";
+            this.labelG.Location = new System.Drawing.Point(53, 35);
+            this.labelG.Name = "labelG";
+            this.labelG.Size = new System.Drawing.Size(100, 23);
+            this.labelG.TabIndex = 0;
+            this.labelG.Text = "Garantias";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.dgvListaGarantias);
+            this.panel1.Location = new System.Drawing.Point(22, 86);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(731, 319);
+            this.panel1.TabIndex = 1;
+            // 
+            // dgvListaGarantias
+            // 
+            this.dgvListaGarantias.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListaGarantias.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvListaGarantias.Location = new System.Drawing.Point(0, 0);
+            this.dgvListaGarantias.Name = "dgvListaGarantias";
+            this.dgvListaGarantias.Size = new System.Drawing.Size(731, 319);
+            this.dgvListaGarantias.TabIndex = 0;
             // 
             // GarantiasControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.labelG);
             this.Name = "GarantiasControl";
-            this.Size = new System.Drawing.Size(668, 514);
+            this.Size = new System.Drawing.Size(771, 514);
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListaGarantias)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelG;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridView dgvListaGarantias;
     }
 }
