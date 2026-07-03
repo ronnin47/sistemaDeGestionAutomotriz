@@ -106,7 +106,7 @@ Todas las pantallas comparten un mismo esqueleto:
 
 ## 9. Iconografía
 
-Íconos provistos por la fuente **Segoe MDL2 Assets**, incluida en Windows 10 y 11. No requiere instalación de recursos ni dependencias externas.
+Íconos provistos por la fuente **Segoe MDL2 Assets**, incluida en Windows 10 y 11. No requiere instalación de recursos ni dependencias externas. El menú lateral muestra un ícono junto a cada opción; como un botón admite una sola fuente, el glifo se dibuja a una imagen y se coloca a la izquierda del texto. En las tablas, las acciones por fila usan color según su naturaleza: editar en azul (primario) y dar de baja en rojo.
 
 ---
 
@@ -170,3 +170,8 @@ El alta (`FormOrden`) usa un **selector de grupo** con tres botones; según el g
 - **Cerrajería / Instalación:** tipo de servicio y marca.
 
 Además, en los tres grupos: cliente y técnico (elegidos de listas), y observaciones. La orden se crea en estado "Ingresado" mediante el método del grupo correspondiente (`CrearNuevaOrden` / `...Cerrajeria` / `...Instalacion`). El cliente se elige entre los existentes.
+
+La pantalla incluye dos elementos de apoyo a la lectura:
+
+- **Tarjetas de resumen** sobre la tabla, con conteos de un vistazo: órdenes activas (las que no están en un estado final) y cantidad por grupo (Módulo / Cerrajería / Instalaciones).
+- **Panel de detalle** al pie: al seleccionar una fila muestra la información completa de esa orden. A la izquierda, los datos del cliente y de la orden (cliente, técnico, estado, teléfono, vehículo, DNI); a la derecha, separados por una línea, el diagnóstico y las observaciones, con espacio para texto extenso.
