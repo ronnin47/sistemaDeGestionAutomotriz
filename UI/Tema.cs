@@ -74,6 +74,13 @@ namespace sistemaDeGestionAutomotriz.UI
             public static readonly string Cancelar = char.ConvertFromUtf32(0xE711);
             public static readonly string Refrescar = char.ConvertFromUtf32(0xE72C);
             public static readonly string Cliente = char.ConvertFromUtf32(0xE77B);
+            public static readonly string Ordenes = char.ConvertFromUtf32(0xE90F);
+            public static readonly string Ventas = char.ConvertFromUtf32(0xE7BF);
+            public static readonly string Cotizaciones = char.ConvertFromUtf32(0xE8A5);
+            public static readonly string Garantias = char.ConvertFromUtf32(0xEB95);
+            public static readonly string ModoOscuro = char.ConvertFromUtf32(0xE708);
+            public static readonly string ModoClaro = char.ConvertFromUtf32(0xE706);
+            public static readonly string CerrarSesion = char.ConvertFromUtf32(0xF3B1);
         }
 
         /// <summary>Título de una pantalla.</summary>
@@ -156,6 +163,32 @@ namespace sistemaDeGestionAutomotriz.UI
             boton.FlatAppearance.MouseOverBackColor = PrimarioClaro;
             boton.Cursor = Cursors.Hand;
             boton.Size = new Size(32, 28);
+        }
+
+        /// <summary>Pone un ícono (glifo Segoe MDL2) a la izquierda del texto del botón.</summary>
+        public static void PonerIcono(Button boton, string glifo, bool centrado = false, float tam = 13F)
+        {
+            if (boton.Image != null) boton.Image.Dispose();
+            boton.Image = GlifoAImagen(glifo, boton.ForeColor, tam);
+            boton.ImageAlign = centrado ? ContentAlignment.MiddleCenter : ContentAlignment.MiddleLeft;
+            boton.TextAlign = centrado ? ContentAlignment.MiddleCenter : ContentAlignment.MiddleLeft;
+            boton.TextImageRelation = TextImageRelation.ImageBeforeText;
+        }
+
+        private static Bitmap GlifoAImagen(string glifo, Color color, float tam)
+        {
+            int lado = (int)(tam * 1.7F);
+            Bitmap bmp = new Bitmap(lado, lado);
+            using (Graphics g = Graphics.FromImage(bmp))
+            using (Font f = FuenteIcono(tam))
+            using (Brush b = new SolidBrush(color))
+            {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                StringFormat sf = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+                g.DrawString(glifo, f, b, new RectangleF(0, 0, lado, lado), sf);
+            }
+            return bmp;
         }
 
         /// <summary>Estilo de una caja de texto.</summary>

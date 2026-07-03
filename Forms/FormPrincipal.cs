@@ -63,12 +63,14 @@ namespace sistemaDeGestionAutomotriz
             }
 
             Button[] navegacion = { buttonOrdenes, buttonClientes, buttonVentas, buttonCotizaciones, buttonGarantias };
+            string[] iconos = { Tema.Iconos.Ordenes, Tema.Iconos.Cliente, Tema.Iconos.Ventas, Tema.Iconos.Cotizaciones, Tema.Iconos.Garantias };
             int y = 72;
-            foreach (Button boton in navegacion)
+            for (int i = 0; i < navegacion.Length; i++)
             {
-                Tema.EstiloBotonMenu(boton);
-                boton.Size = new Size(panelMenu.Width, 46);
-                boton.Location = new Point(0, y);
+                Tema.EstiloBotonMenu(navegacion[i]);
+                Tema.PonerIcono(navegacion[i], iconos[i]);
+                navegacion[i].Size = new Size(panelMenu.Width, 46);
+                navegacion[i].Location = new Point(0, y);
                 y += 46;
             }
 
@@ -80,6 +82,7 @@ namespace sistemaDeGestionAutomotriz
             }
             Tema.EstiloBotonMenu(_btnModo);
             _btnModo.Text = Tema.ModoOscuro ? "Modo claro" : "Modo oscuro";
+            Tema.PonerIcono(_btnModo, Tema.ModoOscuro ? Tema.Iconos.ModoClaro : Tema.Iconos.ModoOscuro);
             _btnModo.Size = new Size(panelMenu.Width, 46);
             _btnModo.Location = new Point(0, panelMenu.Height - 104);
             _btnModo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
@@ -87,6 +90,7 @@ namespace sistemaDeGestionAutomotriz
             Tema.EstiloBotonMenu(buttonLogOut);
             buttonLogOut.Text = "Cerrar sesión";
             buttonLogOut.ForeColor = ColorTranslator.FromHtml("#F2B8B8");
+            Tema.PonerIcono(buttonLogOut, Tema.Iconos.CerrarSesion);
             buttonLogOut.FlatAppearance.MouseOverBackColor = ColorTranslator.FromHtml("#A32D2D");
             buttonLogOut.Size = new Size(panelMenu.Width, 46);
             buttonLogOut.Location = new Point(0, panelMenu.Height - 58);

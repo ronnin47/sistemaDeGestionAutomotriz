@@ -44,8 +44,8 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.Columns.Add(ColumnaTexto("Telefono", "Teléfono"));
             _grilla.Columns.Add(ColumnaTexto("Email", "Email"));
             _grilla.Columns.Add(ColumnaTexto("Dni", "DNI"));
-            _colEditar = ColumnaAccion(Tema.Iconos.Editar);
-            _colEliminar = ColumnaAccion(Tema.Iconos.Eliminar);
+            _colEditar = ColumnaAccion(Tema.Iconos.Editar, Tema.Primario);
+            _colEliminar = ColumnaAccion(Tema.Iconos.Eliminar, Tema.CerradoTexto);
             _grilla.Columns.Add(_colEditar);
             _grilla.Columns.Add(_colEliminar);
             _grilla.CellContentClick += Grilla_CellContentClick;
@@ -82,6 +82,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             Tema.EstiloSubtitulo(_lblContador);
             _btnNuevo = new Button { Text = "+  Nuevo cliente", Size = new Size(150, 36) };
             Tema.EstiloBotonPrimario(_btnNuevo);
+            _btnNuevo.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             _btnNuevo.Click += (s, e) => NuevoCliente();
             header.Controls.Add(_lblTitulo);
             header.Controls.Add(_lblContador);
@@ -105,7 +106,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             };
         }
 
-        private DataGridViewButtonColumn ColumnaAccion(string glifo)
+        private DataGridViewButtonColumn ColumnaAccion(string glifo, Color color)
         {
             var col = new DataGridViewButtonColumn
             {
@@ -117,7 +118,8 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 FlatStyle = FlatStyle.Flat
             };
             col.DefaultCellStyle.Font = Tema.FuenteIcono(11F);
-            col.DefaultCellStyle.ForeColor = Tema.TextoSecundario;
+            col.DefaultCellStyle.ForeColor = color;
+            col.DefaultCellStyle.SelectionForeColor = color;
             return col;
         }
 

@@ -76,6 +76,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
             Tema.EstiloSubtitulo(_lblContador);
             _btnNueva = new Button { Text = "+  Nueva venta", Size = new Size(140, 36) };
             Tema.EstiloBotonPrimario(_btnNueva);
+            _btnNueva.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             _btnNueva.Click += (s, e) => NuevaVenta();
             header.Controls.Add(_lblTitulo);
             header.Controls.Add(_lblContador);
