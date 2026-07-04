@@ -104,6 +104,7 @@ namespace sistemaDeGestionAutomotriz.Forms
             this.Controls.Add(this.label1);
             this.Name = "FormNuevaOrden";
             this.Text = "FormNuevaOrden";
+            this.Load += new System.EventHandler(this.FormNuevaOrden_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

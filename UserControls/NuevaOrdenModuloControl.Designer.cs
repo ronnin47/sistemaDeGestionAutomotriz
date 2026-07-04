@@ -207,13 +207,6 @@ namespace sistemaDeGestionAutomotriz.UserControls
             // comboBoxTipoModulo
             // 
             this.comboBoxTipoModulo.FormattingEnabled = true;
-            this.comboBoxTipoModulo.Items.AddRange(new object[] {
-            "ECU motor",
-            "ECU ABS",
-            "ECU airbag",
-            "Tablero",
-            "BSI/BCM",
-            "inmobilizador"});
             this.comboBoxTipoModulo.Location = new System.Drawing.Point(26, 168);
             this.comboBoxTipoModulo.Name = "comboBoxTipoModulo";
             this.comboBoxTipoModulo.Size = new System.Drawing.Size(121, 21);

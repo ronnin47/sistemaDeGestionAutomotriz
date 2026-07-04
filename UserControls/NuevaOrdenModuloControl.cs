@@ -38,11 +38,27 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
         private void NuevaOrdenModuloControl_Load(object sender, EventArgs e)
         {
+            /*
+             
 
+
+
+
+
+             
+             */
+
+            //cargar el combo
+            comboBoxTipoModulo.Items.Clear();
+            comboBoxTipoModulo.Items.Add("ECU motor");
+            comboBoxTipoModulo.Items.Add("ECU ABS");
+            comboBoxTipoModulo.Items.Add("ECU airbag");
+            comboBoxTipoModulo.Items.Add("Tablero");
+            comboBoxTipoModulo.Items.Add("BSI/BCM");
+            comboBoxTipoModulo.Items.Add("inmobilizador");
             CargarUsuarios();
 
         }
-
 
 
         private void buttonCrearOrden_Click(object sender, EventArgs e)
@@ -55,8 +71,44 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
             try
             {
+                int tipoModulo = 0;
 
-          
+                switch (comboBoxTipoModulo.Text)
+                {
+                    case "ECU motor":
+                        tipoModulo = 1;
+                        break;
+
+                    case "Tablero":
+                        tipoModulo = 2;
+                        break;
+
+                    case "inmobilizador":
+                        tipoModulo = 3;
+                        break;
+
+                    case "BSI/BCM":
+                        tipoModulo = 4;
+                        break;
+
+                    case "ECU airbag":
+                        tipoModulo = 5;
+                        break;
+
+                    case "ECU ABS":
+                        tipoModulo = 6;
+                        break;
+
+
+                    
+
+                    
+
+                    default:
+                        MessageBox.Show("Seleccione un tipo de módulo.");
+                        return;
+                }
+
                 OrdenTrabajo nuevaOrden = new OrdenTrabajo
                 {
                     //cliente
@@ -68,8 +120,10 @@ namespace sistemaDeGestionAutomotriz.UserControls
                     Direccion = textBoxDireccion.Text.Trim(),//ok 
 
 
-                    //detalle
+                    
                     TipoModulo = comboBoxTipoModulo.Text,//ok
+                    TipoModuloId=tipoModulo, //Aca esta el id del text de arriba
+
                     Modelo = textBoxModelo.Text.Trim(),//ok
                     Marca = textBoxMarca.Text.Trim(),//ok
                     TipoVehiculo = comboBoxVehiculo.Text,//ok

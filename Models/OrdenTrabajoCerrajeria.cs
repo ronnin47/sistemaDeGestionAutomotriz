@@ -35,7 +35,7 @@ namespace sistemaDeGestionAutomotriz.Models
 
         public string TipoServicio { get; set; }
 
-      
+        public int TipoServicioId { get; set; }
 
         public string Marca { get; set; }
 
