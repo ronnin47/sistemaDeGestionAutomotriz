@@ -145,7 +145,7 @@ El alta, el listado, la edición y la baja operan contra el servicio de clientes
 
 ## 14. Pantalla de Ventas
 
-Aplica el molde común. Encabezado con título "Ventas de insumos", contador y botón "Nueva venta"; buscador por cliente o insumo; tabla con N°, Cliente, Insumo, Cantidad, Total (formato moneda) y Fecha. El alta (`FormVenta`) permite elegir cliente e insumo, indicar la cantidad y calcula el total automáticamente; muestra el stock disponible junto a cada insumo y no deja vender más de lo disponible. Al registrar, el backend descuenta el stock.
+Aplica el molde común. Encabezado con título "Ventas de insumos", contador y botón "Nueva venta"; buscador por cliente o insumo; tabla con N°, Cliente, Insumo, Cantidad, Total (formato moneda) y Fecha. El alta (`FormVenta`) permite elegir cliente e insumo, indicar la cantidad y calcula el total automáticamente; muestra el stock disponible junto a cada insumo y no deja vender más de lo disponible. Al registrar, el backend descuenta el stock. Cada fila ofrece **dar de baja** (con confirmación): anula la venta y repone el stock; las ventas anuladas dejan de listarse.
 
 ---
 
@@ -169,7 +169,9 @@ El alta (`FormOrden`) usa un **selector de grupo** con tres botones; según el g
 - **Módulo:** tipo de módulo, marca, modelo, tipo de vehículo, combustible.
 - **Cerrajería / Instalación:** tipo de servicio y marca.
 
-Además, en los tres grupos: cliente y técnico (elegidos de listas), y observaciones. La orden se crea en estado "Ingresado" mediante el método del grupo correspondiente (`CrearNuevaOrden` / `...Cerrajeria` / `...Instalacion`). El cliente se elige entre los existentes.
+El tipo de módulo / servicio se elige de una **lista de servicios** (tabla `tipos_servicio`); la orden guarda el identificador del servicio elegido, del que se derivan su categoría y su nombre. Además, en los tres grupos: cliente y técnico (elegidos de listas), y observaciones. El cliente se elige entre los existentes.
+
+Cada fila ofrece dos acciones: **editar** y **dar de baja**. La edición (`FormEditarOrden`) permite cambiar los campos operativos de la orden —estado, técnico, precio, teléfono, es reparable, garantía (y su motivo), diagnóstico y observaciones—, mostrando como solo lectura el contexto (cliente, servicio, vehículo, categoría). La baja anula la orden (con confirmación) y deja de listarse.
 
 La pantalla incluye dos elementos de apoyo a la lectura:
 
