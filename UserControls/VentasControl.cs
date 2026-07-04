@@ -21,6 +21,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
         private TextBox _txtBuscar;
         private DataGridView _grilla;
         private Label _lblVacio;
+        private DataGridViewButtonColumn _colBaja;
 
         public VentasControl()
         {
@@ -43,6 +44,9 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.Columns.Add(Columna("Cantidad", "Cantidad", DataGridViewContentAlignment.MiddleRight));
             _grilla.Columns.Add(Columna("Total", "Total", DataGridViewContentAlignment.MiddleRight, "C0"));
             _grilla.Columns.Add(Columna("Fecha", "Fecha", null, "dd/MM/yyyy"));
+            _colBaja = ColumnaAccion(Tema.Iconos.Eliminar, Tema.CerradoTexto);
+            _grilla.Columns.Add(_colBaja);
+            _grilla.CellContentClick += Grilla_CellContentClick;
 
             _lblVacio = new Label
             {
@@ -150,6 +154,43 @@ namespace sistemaDeGestionAutomotriz.UserControls
                         CargarVentas();
                 }
             }
+        }
+
+        private DataGridViewButtonColumn ColumnaAccion(string glifo, Color color)
+        {
+            var col = new DataGridViewButtonColumn
+            {
+                Text = glifo,
+                UseColumnTextForButtonValue = true,
+                HeaderText = "",
+                Width = 44,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                FlatStyle = FlatStyle.Flat
+            };
+            col.DefaultCellStyle.Font = Tema.FuenteIcono(11F);
+            col.DefaultCellStyle.ForeColor = color;
+            col.DefaultCellStyle.SelectionForeColor = color;
+            return col;
+        }
+
+        private void Grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            VentaInsumosDto venta = _grilla.Rows[e.RowIndex].DataBoundItem as VentaInsumosDto;
+            if (venta == null) return;
+
+            if (e.ColumnIndex == _colBaja.Index) DarDeBajaVenta(venta);
+        }
+
+        private void DarDeBajaVenta(VentaInsumosDto venta)
+        {
+            bool confirma = Avisos.Confirmar(
+                "¿Dar de baja la venta N° " + venta.NumeroVenta + " de " + venta.Cliente +
+                "?\r\nSe repondrá el stock del insumo.");
+            if (!confirma) return;
+
+            _service.AnularVenta(venta.NumeroVenta, venta.idKit, venta.Cantidad);
+            CargarVentas();
         }
     }
 }

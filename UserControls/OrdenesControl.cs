@@ -21,6 +21,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
         private ComboBox _cboCategoria;
         private DataGridView _grilla;
         private Label _lblVacio;
+        private DataGridViewButtonColumn _colBaja;
 
         private Label _stActivas, _stModulo, _stCerrajeria, _stInstalacion;
         private Label _dCliente, _dDni, _dTelefono, _dVehiculo, _dTecnico, _dEstado, _dDiagnostico, _dObservaciones;
@@ -49,7 +50,10 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.Columns.Add(Columna("FechaIngreso", "Ingreso", null, "dd/MM/yyyy"));
             _grilla.Columns.Add(Columna("Estado", "Estado"));
             _grilla.Columns.Add(Columna("Precio", "Precio", DataGridViewContentAlignment.MiddleRight, "C0"));
+            _colBaja = ColumnaAccion(Tema.Iconos.Eliminar, Tema.CerradoTexto);
+            _grilla.Columns.Add(_colBaja);
             _grilla.CellFormatting += Grilla_CellFormatting;
+            _grilla.CellContentClick += Grilla_CellContentClick;
             _grilla.SelectionChanged += (s, e) => MostrarDetalle(_grilla.CurrentRow != null ? _grilla.CurrentRow.DataBoundItem as OrdenTrabajoDto : null);
 
             _lblVacio = new Label
@@ -286,6 +290,43 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 if (form.ShowDialog() == DialogResult.OK)
                     CargarOrdenes();
             }
+        }
+
+        private DataGridViewButtonColumn ColumnaAccion(string glifo, Color color)
+        {
+            var col = new DataGridViewButtonColumn
+            {
+                Text = glifo,
+                UseColumnTextForButtonValue = true,
+                HeaderText = "",
+                Width = 44,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                FlatStyle = FlatStyle.Flat
+            };
+            col.DefaultCellStyle.Font = Tema.FuenteIcono(11F);
+            col.DefaultCellStyle.ForeColor = color;
+            col.DefaultCellStyle.SelectionForeColor = color;
+            return col;
+        }
+
+        private void Grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            OrdenTrabajoDto orden = _grilla.Rows[e.RowIndex].DataBoundItem as OrdenTrabajoDto;
+            if (orden == null) return;
+
+            if (e.ColumnIndex == _colBaja.Index) DarDeBajaOrden(orden);
+        }
+
+        private void DarDeBajaOrden(OrdenTrabajoDto orden)
+        {
+            bool confirma = Avisos.Confirmar(
+                "¿Dar de baja la orden N° " + orden.NumeroOrden + " de " + orden.Cliente +
+                "?\r\nDejará de aparecer en la lista.");
+            if (!confirma) return;
+
+            _service.AnularOrden(orden.NumeroOrden);
+            CargarOrdenes();
         }
     }
 }
