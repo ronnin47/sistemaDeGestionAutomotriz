@@ -109,7 +109,9 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
         private void CargarVentas()
         {
-            _ventas = _service.ObtenerVentaInsumos() ?? new List<VentaInsumosDto>();
+            // Las ventas anuladas (baja) no se muestran.
+            _ventas = (_service.ObtenerVentaInsumos() ?? new List<VentaInsumosDto>())
+                .Where(v => !string.Equals(v.Estado, "Anulada", StringComparison.OrdinalIgnoreCase)).ToList();
             AplicarFiltro();
         }
 
