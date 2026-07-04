@@ -21,7 +21,7 @@ namespace sistemaDeGestionAutomotriz.UserControls
         private ComboBox _cboCategoria;
         private DataGridView _grilla;
         private Label _lblVacio;
-        private DataGridViewButtonColumn _colBaja;
+        private DataGridViewButtonColumn _colEditar, _colBaja;
 
         private Label _stActivas, _stModulo, _stCerrajeria, _stInstalacion;
         private Label _dCliente, _dDni, _dTelefono, _dVehiculo, _dTecnico, _dEstado, _dDiagnostico, _dObservaciones;
@@ -50,6 +50,8 @@ namespace sistemaDeGestionAutomotriz.UserControls
             _grilla.Columns.Add(Columna("FechaIngreso", "Ingreso", null, "dd/MM/yyyy"));
             _grilla.Columns.Add(Columna("Estado", "Estado"));
             _grilla.Columns.Add(Columna("Precio", "Precio", DataGridViewContentAlignment.MiddleRight, "C0"));
+            _colEditar = ColumnaAccion(Tema.Iconos.Editar, Tema.Primario);
+            _grilla.Columns.Add(_colEditar);
             _colBaja = ColumnaAccion(Tema.Iconos.Eliminar, Tema.CerradoTexto);
             _grilla.Columns.Add(_colBaja);
             _grilla.CellFormatting += Grilla_CellFormatting;
@@ -229,7 +231,9 @@ namespace sistemaDeGestionAutomotriz.UserControls
 
         private void CargarOrdenes()
         {
-            _ordenes = _service.ObtenerOrdenesTrabajo() ?? new List<OrdenTrabajoDto>();
+            // Las órdenes anuladas (baja) no se muestran, igual que las bajas de clientes.
+            _ordenes = (_service.ObtenerOrdenesTrabajo() ?? new List<OrdenTrabajoDto>())
+                .Where(o => !Es(o.Estado, "Anulada")).ToList();
             ActualizarStats();
             AplicarFiltro();
         }
@@ -315,7 +319,20 @@ namespace sistemaDeGestionAutomotriz.UserControls
             OrdenTrabajoDto orden = _grilla.Rows[e.RowIndex].DataBoundItem as OrdenTrabajoDto;
             if (orden == null) return;
 
-            if (e.ColumnIndex == _colBaja.Index) DarDeBajaOrden(orden);
+            if (e.ColumnIndex == _colEditar.Index) EditarOrden(orden);
+            else if (e.ColumnIndex == _colBaja.Index) DarDeBajaOrden(orden);
+        }
+
+        private void EditarOrden(OrdenTrabajoDto orden)
+        {
+            using (FormEditarOrden form = new FormEditarOrden(orden))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    if (_service.ActualizarOrden(form.Orden))
+                        CargarOrdenes();
+                }
+            }
         }
 
         private void DarDeBajaOrden(OrdenTrabajoDto orden)
