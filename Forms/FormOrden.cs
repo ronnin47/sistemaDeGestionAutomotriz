@@ -16,7 +16,7 @@ namespace sistemaDeGestionAutomotriz.Forms
 
         private Button _btnModulo, _btnCerrajeria, _btnInstalacion;
         private string _grupo = "Módulo";
-        private ComboBox _cboCliente, _cboTecnico;
+        private ComboBox _cboCliente, _cboTecnico, _cboServicio;
         private Panel _panelEspecifico;
         private TextBox _txtObservaciones;
         private Button _btnGuardar, _btnCancelar;
@@ -111,20 +111,84 @@ namespace sistemaDeGestionAutomotriz.Forms
         {
             _panelEspecifico.Controls.Clear();
             _campos.Clear();
+            _cboServicio = null;
 
             if (_grupo == "Módulo")
             {
-                CampoEspecifico("TipoModulo", "Tipo de módulo", 0, 0);
+                _cboServicio = ComboServicio("Tipo de módulo", 0, 0, ServiciosModulo());
                 CampoEspecifico("Marca", "Marca", 215, 0);
                 CampoEspecifico("Modelo", "Modelo", 0, 56);
                 CampoEspecifico("TipoVehiculo", "Tipo de vehículo", 215, 56);
                 CampoEspecifico("Combustible", "Combustible", 0, 112);
             }
-            else // Cerrajería / Instalación: mismos campos
+            else if (_grupo == "Cerrajería")
             {
-                CampoEspecifico("TipoServicio", "Tipo de servicio", 0, 0);
+                _cboServicio = ComboServicio("Tipo de servicio", 0, 0, ServiciosCerrajeria());
                 CampoEspecifico("Marca", "Marca", 215, 0);
             }
+            else // Instalación
+            {
+                _cboServicio = ComboServicio("Tipo de servicio", 0, 0, ServiciosInstalacion());
+                CampoEspecifico("Marca", "Marca", 215, 0);
+            }
+        }
+
+        private ComboBox ComboServicio(string titulo, int x, int y, List<ItemServicio> items)
+        {
+            _panelEspecifico.Controls.Add(new Label { Text = titulo, AutoSize = true, Location = new Point(x, y), ForeColor = Tema.TextoSecundario, Font = Tema.FuenteEtiqueta });
+            ComboBox cbo = new ComboBox { Location = new Point(x, y + 18), Width = 195, DropDownStyle = ComboBoxStyle.DropDownList };
+            Tema.EstiloCombo(cbo);
+            cbo.DataSource = items;
+            cbo.SelectedIndex = -1;
+            _panelEspecifico.Controls.Add(cbo);
+            return cbo;
+        }
+
+        // TEMPORAL: mapeo fijo de tipos_servicio (id -> nombre) tomado de la base.
+        // Cuando el back exponga ObtenerTiposServicio(), reemplazar estas listas por la consulta.
+        private List<ItemServicio> ServiciosModulo()
+        {
+            return new List<ItemServicio>
+            {
+                new ItemServicio { Id = 1, Nombre = "Reparación de ECU" },
+                new ItemServicio { Id = 2, Nombre = "Reparación de Tablero" },
+                new ItemServicio { Id = 3, Nombre = "Programación de ECU" },
+                new ItemServicio { Id = 4, Nombre = "Clonación de Módulos" },
+                new ItemServicio { Id = 5, Nombre = "Reparación de Airbag" },
+                new ItemServicio { Id = 6, Nombre = "Reparación de ABS" }
+            };
+        }
+
+        private List<ItemServicio> ServiciosCerrajeria()
+        {
+            return new List<ItemServicio>
+            {
+                new ItemServicio { Id = 7, Nombre = "Programación de Llaves" },
+                new ItemServicio { Id = 8, Nombre = "Copia de Llaves" },
+                new ItemServicio { Id = 9, Nombre = "Codificación de Controles" },
+                new ItemServicio { Id = 10, Nombre = "Apertura de Vehículos" },
+                new ItemServicio { Id = 16, Nombre = "Reparación de cerradura" },
+                new ItemServicio { Id = 17, Nombre = "Reparación de Telecomando" }
+            };
+        }
+
+        private List<ItemServicio> ServiciosInstalacion()
+        {
+            return new List<ItemServicio>
+            {
+                new ItemServicio { Id = 11, Nombre = "Instalación de Alarmas" },
+                new ItemServicio { Id = 12, Nombre = "Instalación de Estéreos" },
+                new ItemServicio { Id = 13, Nombre = "Instalación de Cámaras de Reversa" },
+                new ItemServicio { Id = 14, Nombre = "Instalación de Sensores de Estacionamiento" },
+                new ItemServicio { Id = 15, Nombre = "Instalación de Luces LED" }
+            };
+        }
+
+        private class ItemServicio
+        {
+            public int Id;
+            public string Nombre;
+            public override string ToString() { return Nombre; }
         }
 
         private void CampoEspecifico(string clave, string titulo, int x, int y)
@@ -150,6 +214,13 @@ namespace sistemaDeGestionAutomotriz.Forms
                 return;
             }
 
+            ItemServicio serv = _cboServicio != null ? _cboServicio.SelectedItem as ItemServicio : null;
+            if (serv == null)
+            {
+                Avisos.Error("Elegí el tipo de servicio.");
+                return;
+            }
+
             Cliente cli = ic.Cliente;
             int idTecnico = (int)_cboTecnico.SelectedValue;
             bool ok;
@@ -166,7 +237,8 @@ namespace sistemaDeGestionAutomotriz.Forms
                     Email = cli.Email,
                     Direccion = cli.Direccion,
                     IdUsuarioAsignado = idTecnico,
-                    TipoModulo = Campo("TipoModulo"),
+                    TipoModulo = serv.Nombre,
+                    TipoModuloId = serv.Id,
                     Marca = Campo("Marca"),
                     Modelo = Campo("Modelo"),
                     TipoVehiculo = Campo("TipoVehiculo"),
@@ -188,7 +260,8 @@ namespace sistemaDeGestionAutomotriz.Forms
                     Email = cli.Email,
                     Direccion = cli.Direccion,
                     IdUsuarioAsignado = idTecnico,
-                    TipoServicio = Campo("TipoServicio"),
+                    TipoServicio = serv.Nombre,
+                    TipoServicioId = serv.Id,
                     Marca = Campo("Marca"),
                     Observaciones = _txtObservaciones.Text.Trim(),
                     Estado = "Ingresado",
@@ -207,7 +280,8 @@ namespace sistemaDeGestionAutomotriz.Forms
                     Email = cli.Email,
                     Direccion = cli.Direccion,
                     IdUsuarioAsignado = idTecnico,
-                    TipoServicio = Campo("TipoServicio"),
+                    TipoServicio = serv.Nombre,
+                    TipoServicioId = serv.Id,
                     Marca = Campo("Marca"),
                     Observaciones = _txtObservaciones.Text.Trim(),
                     Estado = "Ingresado",
