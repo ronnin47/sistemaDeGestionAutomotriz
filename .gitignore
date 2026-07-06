@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Documentacion personal (no va en el repo)
+docs/DocumentacionUI_*
+.gstack/
