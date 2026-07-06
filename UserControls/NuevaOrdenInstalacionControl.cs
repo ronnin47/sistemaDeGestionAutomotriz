@@ -99,18 +99,18 @@ namespace sistemaDeGestionAutomotriz.UserControls
                 OrdenTrabajoInstalacion nuevaOrden = new OrdenTrabajoInstalacion
                 {
                     //cliente
-                    NombreCliente = textBoxNombre.Text.Trim(),//ok
-                    ApellidoCliente = textBoxApellido.Text.Trim(),//ok
-                    Dni = textBoxDni.Text.Trim(),//ok
-                    Telefono = textBoxTelefono.Text.Trim(),//ok
-                    Email = textBoxEmail.Text.Trim(),//ok 
-                    Direccion = textBoxDireccion.Text.Trim(),//ok 
+                    NombreCliente = textBoxNombre.Text.Trim(),
+                    ApellidoCliente = textBoxApellido.Text.Trim(),
+                    Dni = textBoxDni.Text.Trim(),
+                    Telefono = textBoxTelefono.Text.Trim(),
+                    Email = textBoxEmail.Text.Trim(),
+                    Direccion = textBoxDireccion.Text.Trim(),
 
 
                     //detalle
-                    TipoServicio = comboBoxTipoServicio.Text,//ok
+                    TipoServicio = comboBoxTipoServicio.Text,
                     TipoServicioId = tipoServicio,// aca guardamos el id del combo
-                    Marca = textBoxModeloVehiculo.Text,//ok
+                    Marca = textBoxModeloVehiculo.Text,
 
 
                     IdUsuarioAsignado = (int)comboBoxUsuarios.SelectedValue,//ok
