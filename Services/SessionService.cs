@@ -10,43 +10,6 @@ namespace sistemaDeGestionAutomotriz
     {
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         //Persistencia en memoria local de la sesion 
         private static readonly string Carpeta =
             Path.Combine(

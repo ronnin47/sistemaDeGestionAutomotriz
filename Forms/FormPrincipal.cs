@@ -34,6 +34,8 @@ namespace sistemaDeGestionAutomotriz
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
+
+            Navegar(() => new OrdenesControl());
             AplicarTema();
         }
 
