@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using sistemaDeGestionAutomotriz.Forms;
+using sistemaDeGestionAutomotriz.Services;
+using sistemaDeGestionAutomotriz.Models;
 
 
 namespace sistemaDeGestionAutomotriz
@@ -18,12 +20,16 @@ namespace sistemaDeGestionAutomotriz
 
             if (SessionService.HaySesion())
             {
-                Application.Run(new FormPrincipal());
+                Session sesion = SessionService.ObtenerSesion();
+
+                UsuarioService usuarioService = new UsuarioService();
+                Usuario usuario = usuarioService.ObtenerPorId(sesion.UsuarioId);
+
+                Application.Run(new FormPrincipal(usuario));
             }
             else
             {
                 Application.Run(new FormLogin());
-                //Application.Run(new sistemaDeGestionAutomotriz.Forms.FormLogin());
             }
         }
     }

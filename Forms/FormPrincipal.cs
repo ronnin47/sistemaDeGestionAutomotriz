@@ -21,10 +21,15 @@ namespace sistemaDeGestionAutomotriz
         private Button _btnModo;
         private Func<UserControl> _pantallaActual;   // para poder recrear la pantalla al cambiar de tema
 
+
+
+        /*
         public FormPrincipal()
         {
             InitializeComponent();
         }
+        */
+
 
         public FormPrincipal(Usuario usuario)
         {

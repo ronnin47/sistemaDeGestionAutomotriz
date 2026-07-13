@@ -140,7 +140,53 @@ namespace sistemaDeGestionAutomotriz.Services
             }
         }
 
+        public Usuario ObtenerPorId(int id)
+        {
+            using (NpgsqlConnection conexion = new NpgsqlConnection(Database.CadenaConexion))
+            {
+                try
+                {
+                    conexion.Open();
 
+                    string sql = @"SELECT
+                            id_usuario,
+                            nombre,
+                            apellido,
+                            email,
+                            password,
+                            rol
+                           FROM usuarios
+                           WHERE id_usuario = @id;";
+
+                    NpgsqlCommand comando = new NpgsqlCommand(sql, conexion);
+                    comando.Parameters.AddWithValue("@id", id);
+
+                    NpgsqlDataReader reader = comando.ExecuteReader();
+
+                    if (!reader.Read())
+                    {
+                        return null;
+                    }
+
+                    Usuario usuario = new Usuario
+                    {
+                        UsuarioId = Convert.ToInt32(reader["id_usuario"]),
+                        Nombre = reader["nombre"].ToString(),
+                        Apellido = reader["apellido"].ToString(),
+                        Email = reader["email"].ToString(),
+                        Pass = reader["password"].ToString(),
+                        Rol = reader["rol"].ToString()
+                    };
+
+                    return usuario;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al obtener usuario: " + ex.Message);
+                    return null;
+                }
+            }
+        }
 
 
     }
