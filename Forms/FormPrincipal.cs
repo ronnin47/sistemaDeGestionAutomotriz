@@ -23,14 +23,7 @@ namespace sistemaDeGestionAutomotriz
 
 
 
-        /*
-        public FormPrincipal()
-        {
-            InitializeComponent();
-        }
-        */
-
-
+     
         public FormPrincipal(Usuario usuario)
         {
             InitializeComponent();
